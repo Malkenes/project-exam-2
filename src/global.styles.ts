@@ -1,7 +1,10 @@
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-
+html {
+ --color-primary: #000000;
+ --color-secondary: #8B8BDF;
+}
 body {
     font-family: "DM Sans", sans-serif;
     background-color: #FFF;

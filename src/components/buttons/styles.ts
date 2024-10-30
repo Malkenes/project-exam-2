@@ -6,34 +6,44 @@ const buttonTheme = `
   border-radius: 1em;
   cursor: pointer;
   border: solid 1px;
-
 `;
 
-const primaryButtonTheme = `
-    ${buttonTheme};
-    border-color: #000;
-    background: #000;
-    color: #FFF;
-    &:hover {
-        background: #FFF;
-        color: #000;
-    }
+interface StyledButtonProps {
+  variant: "primary" | "secondary";
+}
+
+export const StyledLink = styled(Link)<StyledButtonProps>`
+  ${buttonTheme}
+  background: ${(props) =>
+    props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+  border-color: ${(props) =>
+    props.variant === "primary"
+      ? props.theme.colors.primary
+      : props.theme.colors.secondary};
+  color: ${(props) =>
+    props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+  &:hover {
+    background: ${(props) =>
+      props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+    color: ${(props) =>
+      props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+  }
 `;
 
-const secondaryButtonTheme = `
-    ${buttonTheme};
-    border-color: #8B8BDF;
-    background: #FFF;
-    color: #8B8BDF;
-    &:hover {
-        background: #8B8BDF;
-        color: #FFF;
-    }
-`;
-
-export const StyledPrimaryLink = styled(Link)`
-  ${primaryButtonTheme};
-`;
-export const StyledSecondaryLink = styled(Link)`
-  ${secondaryButtonTheme};
+export const StyledButton = styled.button<StyledButtonProps>`
+  ${buttonTheme}
+  background: ${(props) =>
+    props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+  border-color: ${(props) =>
+    props.variant === "primary"
+      ? props.theme.colors.primary
+      : props.theme.colors.secondary};
+  color: ${(props) =>
+    props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+  &:hover {
+    background: ${(props) =>
+      props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+    color: ${(props) =>
+      props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+  }
 `;
