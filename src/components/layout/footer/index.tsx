@@ -1,7 +1,18 @@
 import * as S from "./styles";
 import { FaFacebook, FaInstagram, FaTiktok, FaYoutube } from "react-icons/fa";
 
-export default function Footer() {
+/**
+ * Footer component for the Holidaze application.
+ *
+ * This component renders the footer section of the Holidaze website,
+ * including quick links, social media icons, and copyright information.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered footer component.
+ *
+ */
+
+export const Footer: React.FC = () => {
   return (
     <S.StyledFooter>
       <S.StyledQuickLinks>
@@ -24,22 +35,22 @@ export default function Footer() {
         <ul>
           <li>
             <a href="#">
-              <FaFacebook size={24} />
+              <FaFacebook size={24} title="facebook" />
             </a>
           </li>
           <li>
             <a href="#">
-              <FaInstagram size={24} />
+              <FaInstagram size={24} title="instagram" />
             </a>
           </li>
           <li>
             <a href="#">
-              <FaTiktok size={24} />
+              <FaTiktok size={24} title="tiktok" />
             </a>
           </li>
           <li>
             <a href="#">
-              <FaYoutube size={24} />
+              <FaYoutube size={24} title="youtube" />
             </a>
           </li>
         </ul>
@@ -52,4 +63,4 @@ export default function Footer() {
       </div>
     </S.StyledFooter>
   );
-}
+};
