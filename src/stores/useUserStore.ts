@@ -1,11 +1,37 @@
 import { create } from "zustand";
-
+import { persist } from "zustand/middleware";
+import { UserData } from "../shared/types";
 type UserRole = "guest" | "customer" | "manager";
 
-interface UserStore {
+type State = {
   userRole: UserRole;
-  setUserRole: (role: UserRole) => void;
-}
+  userData: UserData;
+  keepSignedIn: boolean;
+};
+type Actions = {
+  setUserData: (userData: UserData) => void;
+  setKeepSignedIn: (isEnabled: boolean) => void;
+  reset: () => void;
+};
+
+const initialState: State = {
+  userRole: "guest",
+  userData: {
+    name: "",
+    email: "",
+    avatar: {
+      url: "/img/logo_holidaze.png",
+      alt: "logo",
+    },
+    banner: {
+      url: "",
+      alt: "",
+    },
+    accessToken: "",
+    venueManager: false,
+  },
+  keepSignedIn: false,
+};
 
 /**
  * Custom hook for managing user state in the Holidaze application.
@@ -32,7 +58,26 @@ interface UserStore {
  *   return <div>User Role: {userRole}</div>;
  * };
  */
-export const useUserStore = create<UserStore>((set) => ({
-  userRole: "guest",
-  setUserRole: (role) => set({ userRole: role }),
-}));
+export const useUserStore = create<State & Actions>()(
+  persist(
+    (set) => ({
+      ...initialState,
+      setUserData: (userData) =>
+        set(() => ({
+          userData: userData,
+          userRole: userData.venueManager ? "manager" : "customer",
+        })),
+      setKeepSignedIn: (isEnabled) => set({ keepSignedIn: isEnabled }),
+      reset: () => {
+        set(initialState);
+      },
+    }),
+    {
+      name: "user",
+      partialize: (state) => (state.keepSignedIn ? state : {}),
+      onRehydrateStorage: () => (state) => {
+        if (state && !state.keepSignedIn) localStorage.removeItem("user");
+      },
+    },
+  ),
+);

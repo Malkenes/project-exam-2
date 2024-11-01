@@ -15,6 +15,7 @@ export const StyledMobileNav = styled.div`
     right: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.01);
+    z-index: 998;
   }
 
   @media (min-width: 786px) {
@@ -32,6 +33,21 @@ export const MenuModal = styled.div`
   border-radius: 1em;
   filter: drop-shadow(0 0 8px rgba(76, 76, 195, 0.25));
   animation: ${fadeIn} 200ms ease-in-out;
+  z-index: 999;
+  background-size: contain;
+  background-repeat: no-repeat;
+  div {
+    text-align: center;
+    h3 {
+      font-size: 16px;
+      margin-top: 0;
+    }
+    img {
+      height: 48px;
+      width: 48px;
+      border-radius: 50%;
+    }
+  }
 `;
 
 export const StyledDesktopNav = styled.div`
@@ -59,7 +75,9 @@ export const StyledNavLinks = styled.ul`
 
 export const StyledUserButton = styled.button`
   border-radius: 50%;
-  background: black;
+  height: 2rem;
+  width: 2rem;
   cursor: pointer;
-  padding: 6px 8px;
+  padding: 0;
+  background-size: contain;
 `;

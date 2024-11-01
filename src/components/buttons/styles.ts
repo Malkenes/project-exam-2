@@ -47,3 +47,8 @@ export const StyledButton = styled.button<StyledButtonProps>`
       props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
   }
 `;
+
+export const StyledFullButton = styled(StyledButton)`
+  width: 100%;
+  height: 60px;
+`;

@@ -4,7 +4,7 @@ import { useState } from "react";
 import * as S from "./styles";
 import { StyledLink } from "../../../buttons/styles";
 import React from "react";
-import { FaUser } from "react-icons/fa";
+import { SignOutButton } from "../../../buttons/signOutButton";
 
 /**
  * Navigation bar component for the Holidaze application.
@@ -38,17 +38,23 @@ export const NavBar: React.FC = () => {
  */
 const MobileNav: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const userData = useUserStore((state) => state.userData);
   return (
     <S.StyledMobileNav>
-      <S.StyledUserButton onClick={() => setIsOpen(!isOpen)}>
-        <FaUser size={24} color="white" />
-      </S.StyledUserButton>
+      <S.StyledUserButton
+        onClick={() => setIsOpen(!isOpen)}
+        style={{ backgroundImage: `url(${userData.avatar.url})` }}
+      ></S.StyledUserButton>
       {isOpen && (
         <>
           <span onClick={() => setIsOpen(!isOpen)}></span>
-          <S.MenuModal>
-            <div>profile component</div>
+          <S.MenuModal
+            style={{ backgroundImage: `url(${userData.banner.url})` }}
+          >
+            <div>
+              <img src={userData.avatar.url} alt={userData.avatar.alt} />
+              <h3>{userData.name}</h3>
+            </div>
             <NavLinks />
           </S.MenuModal>
         </>
@@ -106,20 +112,18 @@ const NavLinks: React.FC = () => {
       )}
       {userRole === "guest" ? (
         <li>
-          <StyledLink to={"/"} variant="secondary">
+          <StyledLink to={"/signin"} variant="secondary">
             Sign in
           </StyledLink>
         </li>
       ) : (
         <li>
-          <StyledLink to={"/"} variant="secondary">
-            Sign out
-          </StyledLink>
+          <SignOutButton />
         </li>
       )}
       {userRole === "guest" && (
         <li>
-          <StyledLink to={"/"} variant="primary">
+          <StyledLink to={"/register"} variant="primary">
             Register
           </StyledLink>
         </li>
