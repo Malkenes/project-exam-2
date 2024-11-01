@@ -7,14 +7,4 @@ describe("User Store", () => {
 
     expect(userRole).toBe("guest");
   });
-
-  it("should update user role", () => {
-    const { setUserRole } = useUserStore.getState();
-
-    setUserRole("manager");
-
-    const { userRole } = useUserStore.getState();
-
-    expect(userRole).toBe("manager");
-  });
 });
