@@ -1,5 +1,5 @@
 import { SignInForm } from "./signinForm";
-import { StyledSignIn, StyledFormWrapper } from "./styles";
+import { StyledSignIn, StyledFormWrapper, StyledHelpWrapper } from "./styles";
 import { Link } from "react-router-dom";
 import { useUserStore } from "../../stores/useUserStore";
 
@@ -25,6 +25,12 @@ export const SignIn: React.FC = () => {
       <StyledFormWrapper>
         <SignInForm />
       </StyledFormWrapper>
+      <StyledHelpWrapper>
+        <h2>Forgot your password?</h2>
+        <Link to={"/signin"}>We'll help you get back on track!</Link>
+        <h2>New to us?</h2>
+        <Link to={"/register"}>Join now for personalized recommendations</Link>
+      </StyledHelpWrapper>
     </StyledSignIn>
   );
 };
