@@ -1,4 +1,3 @@
-/*
 import { describe, expect, it } from "vitest";
 import { useUserStore } from "./useUserStore";
 
@@ -9,4 +8,3 @@ describe("User Store", () => {
     expect(userRole).toBe("guest");
   });
 });
-*/

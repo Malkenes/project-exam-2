@@ -16,8 +16,7 @@ export const signIn = async (
   );
   const result = await response.json();
   if (!response.ok) {
-    const errorMessage: string =
-      result?.errors[0]?.message || "Something went wrong";
+    const errorMessage: string = result?.errors[0]?.message;
     throw new Error(errorMessage);
   }
   return result;
