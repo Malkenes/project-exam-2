@@ -8,6 +8,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route path="signin" element={<pages.SignIn />} />
+            <Route path="register" element={<pages.Register />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -1,15 +1,15 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { UserData } from "../shared/types";
+import { SignInUser } from "../shared/types";
 type UserRole = "guest" | "customer" | "manager";
 
 type State = {
   userRole: UserRole;
-  userData: UserData;
+  userData: SignInUser;
   keepSignedIn: boolean;
 };
 type Actions = {
-  setUserData: (userData: UserData) => void;
+  setUserData: (userData: SignInUser) => void;
   setKeepSignedIn: (isEnabled: boolean) => void;
   reset: () => void;
 };

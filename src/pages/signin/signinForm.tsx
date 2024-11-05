@@ -13,7 +13,14 @@ import { Loader } from "../../components/loaders";
 
 const schema = yup
   .object({
-    email: yup.string().email("Invalid email format").required(),
+    email: yup
+      .string()
+      .email("Invalid email format")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
+        "Email must be a @stud.noroff.no address",
+      )
+      .required(),
     password: yup.string().min(1, "Password to short").required(),
     keepLoggedIn: yup.boolean().required(),
   })
