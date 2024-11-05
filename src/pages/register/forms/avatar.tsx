@@ -2,7 +2,10 @@ import { Avatar as typeAvatar } from "../../../shared/types";
 import {
   StyledInputContainer,
   StyledErrorContainer,
+  StyledPreviewAvatar,
+  StyledButtonContainer,
 } from "../../../components/form/styles";
+import { StyledButton } from "../../../components/buttons/styles";
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
 import { useRegisterStore } from "../../../stores/useRegisterStore";
@@ -38,14 +41,10 @@ export const Avatar: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Avatar</h2>
-      <div style={{ width: "100px", height: "100px", background: "blue" }}>
-        <img
-          src={avatarUrl}
-          alt="Avatar preview"
-          style={{ width: "100%", height: "100%" }}
-        />
-      </div>
+      <h2>Avatar Information (Optional)</h2>
+      <StyledPreviewAvatar>
+        <img src={avatarUrl} alt="Avatar preview" />
+      </StyledPreviewAvatar>
       <StyledErrorContainer>
         <StyledInputContainer>
           <input
@@ -66,10 +65,14 @@ export const Avatar: React.FC = () => {
         </StyledInputContainer>
         <p>{errors.alt?.message}</p>
       </StyledErrorContainer>
-      <button type="button" onClick={goToPrevStep}>
-        Back
-      </button>
-      <button type="submit">Continue</button>
+      <StyledButtonContainer>
+        <StyledButton type="submit" variant="primary">
+          Continue
+        </StyledButton>
+        <StyledButton type="button" onClick={goToPrevStep} variant="secondary">
+          Back
+        </StyledButton>
+      </StyledButtonContainer>
     </form>
   );
 };

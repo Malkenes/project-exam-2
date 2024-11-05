@@ -15,11 +15,6 @@ export const StyledSignIn = styled.main`
     }
   }
 `;
-export const StyledSignInForm = styled.form`
-  p {
-    color: red;
-  }
-`;
 
 export const StyledFormWrapper = styled.div`
   min-height: 400px;

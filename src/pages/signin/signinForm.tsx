@@ -2,9 +2,9 @@ import {
   StyledInputContainer,
   StyledCheckContainer,
   StyledErrorContainer,
+  StyledFormError,
 } from "../../components/form/styles";
 import { StyledFullButton } from "../../components/buttons/styles";
-import { StyledSignInForm } from "./styles";
 import { useSignIn } from "./useSignIn";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -21,7 +21,7 @@ const schema = yup
         "Email must be a @stud.noroff.no address",
       )
       .required(),
-    password: yup.string().min(1, "Password to short").required(),
+    password: yup.string().min(8, "Password to short").required(),
     keepLoggedIn: yup.boolean().required(),
   })
   .required();
@@ -44,7 +44,7 @@ export const SignInForm: React.FC = () => {
     return <Loader />;
   }
   return (
-    <StyledSignInForm onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <StyledErrorContainer>
         <StyledInputContainer>
           <input
@@ -74,7 +74,7 @@ export const SignInForm: React.FC = () => {
         <label htmlFor="keep">Keep me signed in</label>
       </StyledCheckContainer>
       <StyledFullButton variant="primary">Sign In</StyledFullButton>
-      <p>{isError}</p>
-    </StyledSignInForm>
+      <StyledFormError>{isError}</StyledFormError>
+    </form>
   );
 };

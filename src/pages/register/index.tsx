@@ -1,9 +1,9 @@
 import { MultiSteps } from "./forms/index";
+import { StyledRegister } from "./styles";
 
 export const Register: React.FC = () => {
-  console.log("hei");
   return (
-    <main>
+    <StyledRegister>
       <hgroup>
         <h1>Register</h1>
         <p>Your journey starts here Register to find your perfect retreat</p>
@@ -11,6 +11,6 @@ export const Register: React.FC = () => {
       <div>
         <MultiSteps />
       </div>
-    </main>
+    </StyledRegister>
   );
 };

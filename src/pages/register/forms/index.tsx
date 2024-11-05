@@ -2,6 +2,7 @@ import {
   StyledProgressContainer,
   StyledProgressBar,
 } from "../../../components/form/styles";
+import { StyledFormWrapper } from "../styles";
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { Personal } from "./personal";
 import { VenueManager } from "./venueManager";
@@ -26,11 +27,11 @@ export const MultiSteps: React.FC = () => {
     }
   };
   return (
-    <div>
+    <StyledFormWrapper>
       <StyledProgressContainer>
         <StyledProgressBar $percent={step / totalSteps} />
       </StyledProgressContainer>
       {renderSteps()}
-    </div>
+    </StyledFormWrapper>
   );
 };

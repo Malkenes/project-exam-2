@@ -2,12 +2,16 @@ import { Banner as typeBanner } from "../../../shared/types";
 import {
   StyledInputContainer,
   StyledErrorContainer,
+  StyledPreviewBanner,
+  StyledButtonContainer,
 } from "../../../components/form/styles";
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
 import { useRegisterStore } from "../../../stores/useRegisterStore";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { useState } from "react";
+import { StyledButton } from "../../../components/buttons/styles";
 
 const schema = yup
   .object({
@@ -21,6 +25,7 @@ export const Banner: React.FC = () => {
   const goToNextStep = useMultiStepStore((state) => state.setNext);
   const updateRegisterStore = useRegisterStore((state) => state.setBannerState);
   const defaultValues = useRegisterStore.getState().getValues().banner;
+  const [bannerUrl, setBannerUrl] = useState("");
   const {
     register,
     handleSubmit,
@@ -36,10 +41,19 @@ export const Banner: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <h2>Banner</h2>
+      <h2>Banner Information (Optional)</h2>
+      <StyledPreviewBanner>
+        <img src={bannerUrl} alt="Banner preview" />
+      </StyledPreviewBanner>
       <StyledErrorContainer>
         <StyledInputContainer>
-          <input type="text" placeholder="URL" id="url" {...register("url")} />
+          <input
+            type="text"
+            placeholder="URL"
+            id="url"
+            onInput={(e) => setBannerUrl((e.target as HTMLInputElement).value)}
+            {...register("url")}
+          />
           <label htmlFor="url">URL</label>
         </StyledInputContainer>
         <p>{errors.url?.message}</p>
@@ -51,10 +65,14 @@ export const Banner: React.FC = () => {
         </StyledInputContainer>
         <p>{errors.alt?.message}</p>
       </StyledErrorContainer>
-      <button type="button" onClick={goToPrevStep}>
-        Back
-      </button>
-      <button type="submit">Continue</button>
+      <StyledButtonContainer>
+        <StyledButton type="submit" variant="primary">
+          Continue
+        </StyledButton>
+        <StyledButton type="button" onClick={goToPrevStep} variant="secondary">
+          Back
+        </StyledButton>
+      </StyledButtonContainer>
     </form>
   );
 };

@@ -1,12 +1,14 @@
 import {
   StyledInputContainer,
   StyledErrorContainer,
+  StyledButtonContainer,
 } from "../../../components/form/styles";
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
 import { useRegisterStore } from "../../../stores/useRegisterStore";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { StyledButton } from "../../../components/buttons/styles";
 
 const schema = yup
   .object({
@@ -82,16 +84,20 @@ export const Personal: React.FC = () => {
           />
           <label htmlFor="password">Password</label>
         </StyledInputContainer>
-        <p>{errors.name?.message}</p>
+        <p>{errors.password?.message}</p>
       </StyledErrorContainer>
       <StyledErrorContainer>
         <StyledInputContainer>
           <textarea placeholder="bio" id="bio" {...register("bio")} />
           <label htmlFor="bio">Bio</label>
         </StyledInputContainer>
-        <p>{errors.name?.message}</p>
+        <p>{errors.bio?.message}</p>
       </StyledErrorContainer>
-      <button type="submit">Continue</button>
+      <StyledButtonContainer>
+        <StyledButton type="submit" variant="primary">
+          Continue
+        </StyledButton>
+      </StyledButtonContainer>
     </form>
   );
 };

@@ -1,5 +1,10 @@
 import styled from "styled-components";
 
+export const StyledFormError = styled.p`
+  color: red;
+  font-size: 20px;
+  margin-bottom: 48px;
+`;
 export const StyledInputContainer = styled.div`
   font-weight: 800;
   position: relative;
@@ -63,4 +68,32 @@ export const StyledProgressBar = styled.div<{ $percent?: number }>`
   height: 100%;
   border-radius: 0 16px 16px 0;
   transition: width 0.3s ease-in-out;
+`;
+
+export const StyledPreviewAvatar = styled.div`
+  margin-bottom: 48px;
+  img {
+    border-radius: 50%;
+    border: 1px solid;
+    min-height: 160px;
+    height: 160px;
+    min-width: 160px;
+    width: 160px;
+  }
+`;
+
+export const StyledPreviewBanner = styled.div`
+  margin-bottom: 48px;
+  img {
+    min-height: 160px;
+    height: 160px;
+    width: 100%;
+  }
+`;
+
+export const StyledButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  margin-bottom: 48px;
 `;
