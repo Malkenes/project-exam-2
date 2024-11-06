@@ -7,8 +7,10 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
+            <Route index element={<pages.Home />} />
             <Route path="signin" element={<pages.SignIn />} />
             <Route path="register" element={<pages.Register />} />
+            <Route path="edit/:id" element={<pages.Edit />} />
           </Route>
         </Routes>
       </BrowserRouter>

@@ -7,7 +7,7 @@ import {
 } from "../../../components/form/styles";
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
-import { useRegisterStore } from "../../../stores/useRegisterStore";
+import { useUserStore } from "../../../stores/useUserStore";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
@@ -15,7 +15,7 @@ import { StyledButton } from "../../../components/buttons/styles";
 
 const schema = yup
   .object({
-    url: yup.string().url().nullable(),
+    url: yup.string().url(),
     alt: yup.string().max(120, "to long"),
   })
   .required();
@@ -23,9 +23,9 @@ const schema = yup
 export const Banner: React.FC = () => {
   const goToPrevStep = useMultiStepStore((state) => state.setPrev);
   const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const updateRegisterStore = useRegisterStore((state) => state.setBannerState);
-  const defaultValues = useRegisterStore.getState().getValues().banner;
-  const [bannerUrl, setBannerUrl] = useState("");
+  const updateStore = useUserStore((state) => state.setBannerState);
+  const defaultValues = useUserStore((state) => state.userData.banner);
+  const [bannerUrl, setBannerUrl] = useState(defaultValues.url);
   const {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ export const Banner: React.FC = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = (banner: typeBanner) => {
-    updateRegisterStore(banner);
+    updateStore(banner);
     goToNextStep();
   };
 

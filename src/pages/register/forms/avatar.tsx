@@ -8,14 +8,14 @@ import {
 import { StyledButton } from "../../../components/buttons/styles";
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
-import { useRegisterStore } from "../../../stores/useRegisterStore";
+import { useUserStore } from "../../../stores/useUserStore";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
 
 const schema = yup
   .object({
-    url: yup.string().url().nullable(),
+    url: yup.string().url(),
     alt: yup.string().max(120, "to long"),
   })
   .required();
@@ -23,9 +23,9 @@ const schema = yup
 export const Avatar: React.FC = () => {
   const goToPrevStep = useMultiStepStore((state) => state.setPrev);
   const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const updateRegisterStore = useRegisterStore((state) => state.setAvatarState);
-  const defaultValues = useRegisterStore.getState().getValues().avatar;
-  const [avatarUrl, setAvatarUrl] = useState("");
+  const updateStore = useUserStore((state) => state.setAvatarState);
+  const defaultValues = useUserStore((state) => state.userData.avatar);
+  const [avatarUrl, setAvatarUrl] = useState(defaultValues.url);
   const {
     register,
     handleSubmit,
@@ -35,7 +35,7 @@ export const Avatar: React.FC = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = (avatar: typeAvatar) => {
-    updateRegisterStore(avatar);
+    updateStore(avatar);
     goToNextStep();
   };
 

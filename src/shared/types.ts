@@ -1,10 +1,10 @@
 export interface Avatar {
-  url?: string | null;
+  url?: string;
   alt?: string;
 }
 
 export interface Banner {
-  url?: string | null;
+  url?: string;
   alt?: string;
 }
 
@@ -14,14 +14,13 @@ export interface BaseUser {
   avatar: Avatar;
   banner: Banner;
   venueManager: boolean;
-}
-export interface SignInUser extends BaseUser {
-  accessToken: string;
-}
-export interface RegisterUser extends BaseUser {
   bio: string;
 }
-export interface RegisterData extends RegisterUser {
+export interface SignInUser extends BaseUser {
+  keepSignedIn: boolean;
+  accessToken: string;
+}
+export interface RegisterData extends BaseUser {
   password: string;
 }
 export interface SignInResponse {
@@ -29,6 +28,15 @@ export interface SignInResponse {
   meta: Record<string, unknown>;
 }
 export interface RegisterResponse {
-  data: RegisterUser;
+  data: BaseUser;
   meta: Record<string, unknown>;
+}
+
+export interface UpdateProfile {
+  accessToken: string;
+  name: string;
+  bio: string;
+  avatar: Avatar;
+  banner: Banner;
+  venueManager: boolean;
 }

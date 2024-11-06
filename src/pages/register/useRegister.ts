@@ -1,8 +1,15 @@
 import { register as apiRegister } from "../../api/auth";
 import { useState } from "react";
-import { RegisterData } from "../../shared/types";
+import { useMultiStepStore } from "../../stores/useMultiStepStore";
+import { RegisterData, UpdateProfile } from "../../shared/types";
+import { updateProfile } from "../../api/update";
+import { useUserStore } from "../../stores/useUserStore";
+import { useModalStore } from "../../stores/useModalStore";
 
 export const useRegister = () => {
+  const setUserData = useUserStore((state) => state.setState);
+  const openModal = useModalStore((state) => state.openModal);
+  const resetSteps = useMultiStepStore((state) => state.reset);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
 
@@ -10,6 +17,7 @@ export const useRegister = () => {
     setIsLoading(true);
     try {
       await apiRegister(data);
+      resetSteps();
     } catch (error) {
       if (error instanceof Error) {
         setIsError(error.message);
@@ -20,5 +28,22 @@ export const useRegister = () => {
       setIsLoading(false);
     }
   };
-  return { reg, isError, isLoading };
+  const update = async (data: Partial<UpdateProfile>) => {
+    setIsLoading(true);
+    try {
+      const result = await updateProfile(data);
+      setUserData(result.data);
+      openModal();
+      resetSteps();
+    } catch (error) {
+      if (error instanceof Error) {
+        setIsError(error.message);
+      } else {
+        setIsError("Something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  return { reg, update, isError, isLoading };
 };

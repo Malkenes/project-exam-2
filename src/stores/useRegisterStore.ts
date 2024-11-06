@@ -1,3 +1,4 @@
+/*
 import { create } from "zustand";
 import { RegisterData, Avatar, Banner } from "../shared/types";
 
@@ -14,11 +15,11 @@ export const useRegisterStore = create<RegisterData & Action>()((set, get) => ({
   bio: "",
   password: "",
   avatar: {
-    url: null,
+    url: "",
     alt: "",
   },
   banner: {
-    url: null,
+    url: "",
     alt: "",
   },
   venueManager: false,
@@ -33,7 +34,7 @@ export const useRegisterStore = create<RegisterData & Action>()((set, get) => ({
     const result: Partial<RegisterData> = { ...state };
     if (!state.avatar.url) delete result.avatar;
     if (!state.banner.url) delete result.banner;
-
     return result;
   },
 }));
+*/

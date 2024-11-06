@@ -1,30 +1,31 @@
-import {
-  StyledButtonContainer,
-  StyledCheckContainer,
-  StyledFormError,
-} from "../../../components/form/styles";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
-import { useUserStore } from "../../../stores/useUserStore";
 import { useForm } from "react-hook-form";
-import { useRegister } from "../useRegister";
-import { Loader } from "../../../components/loaders";
-import { StyledButton } from "../../../components/buttons/styles";
-import { StyledOrderedList } from "../styles";
-import { RegisterData } from "../../../shared/types";
+import { StyledOrderedList } from "../../pages/register/styles";
+import { useMultiStepStore } from "../../stores/useMultiStepStore";
+import { useUserStore } from "../../stores/useUserStore";
+import { StyledButton } from "../buttons/styles";
+import { Loader } from "../loaders";
+import {
+  StyledCheckContainer,
+  StyledButtonContainer,
+  StyledFormError,
+} from "./styles";
+import { RegisterData } from "../../shared/types";
+import { useRegister } from "../../pages/register/useRegister";
 
-export const VenueManager: React.FC = () => {
+export const EditVenueManager: React.FC = () => {
   const goToPrevStep = useMultiStepStore((state) => state.setPrev);
-  const updateStore = useUserStore((state) => state.setRegisterState);
-  const defaultValues = useUserStore((state) => state.registerData);
+  const updateStore = useUserStore((state) => state.setState);
+  const defaultValues = useUserStore((state) => state.userData);
   const { register, handleSubmit } = useForm({
     defaultValues,
   });
-  const { reg, isError, isLoading } = useRegister();
+  const { update, isError, isLoading } = useRegister();
 
-  const onSubmit = (data: RegisterData) => {
+  const onSubmit = (data: Partial<RegisterData>) => {
     updateStore(data);
-    const datatoApi = useUserStore.getState().getRegisterValues();
-    reg(datatoApi);
+    const datatoApi = useUserStore.getState().getUpdateValues();
+    console.log(datatoApi);
+    update(datatoApi);
   };
 
   if (isLoading) {

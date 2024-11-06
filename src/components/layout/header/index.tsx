@@ -1,5 +1,6 @@
 import { NavBar } from "./navBar";
 import { StyledHeader } from "./styles";
+import { Link } from "react-router-dom";
 
 /**
  * Header component for the Holidaze application.
@@ -15,9 +16,9 @@ import { StyledHeader } from "./styles";
 export const Header: React.FC = () => {
   return (
     <StyledHeader>
-      <a>
+      <Link to={"/"}>
         <img src="/img/logo_holidaze.png" alt="Logo" />
-      </a>
+      </Link>
       <NavBar />
     </StyledHeader>
   );

@@ -22,7 +22,7 @@ const schema = yup
       )
       .required(),
     password: yup.string().min(8, "Password to short").required(),
-    keepLoggedIn: yup.boolean().required(),
+    keepSignedIn: yup.boolean().required(),
   })
   .required();
 
@@ -33,10 +33,11 @@ export const SignInForm: React.FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { signIn, isError, isLoading } = useSignIn();
+
   async function onSubmit(data: {
     email: string;
     password: string;
-    keepLoggedIn: boolean;
+    keepSignedIn: boolean;
   }) {
     await signIn(data);
   }
@@ -70,7 +71,7 @@ export const SignInForm: React.FC = () => {
         <p>{errors.password?.message}</p>
       </StyledErrorContainer>
       <StyledCheckContainer>
-        <input type="checkbox" id="keep" {...register("keepLoggedIn")} />
+        <input type="checkbox" id="keep" {...register("keepSignedIn")} />
         <label htmlFor="keep">Keep me signed in</label>
       </StyledCheckContainer>
       <StyledFullButton variant="primary">Sign In</StyledFullButton>
