@@ -93,26 +93,26 @@ const DesktopNav: React.FC = () => {
  * @returns {JSX.Element} The rendered navigation links component.
  */
 const NavLinks: React.FC = () => {
-  const userRole = useUserStore((state) => state.userRole);
+  const userData = useUserStore((state) => state.userData);
   return (
     <S.StyledNavLinks>
-      {userRole === "manager" ? (
+      {userData.venueManager ? (
         <li>
-          <Link to={"/"}>Manager Dashboard</Link>
+          <Link to={"/profile/" + userData.name}>Manager Dashboard</Link>
         </li>
       ) : (
         <li>
-          <Link to={"/"}>Become a Venue Manager</Link>
+          <Link to={"/edit/profile"}>Become a Venue Manager</Link>
         </li>
       )}
-      {userRole !== "guest" && (
+      {userData.accessToken && (
         <li>
-          <Link to={"/"}>View Bookings</Link>
+          <Link to={"/profile/" + userData.name}>View Bookings</Link>
         </li>
       )}
-      {userRole === "guest" ? (
+      {!userData.accessToken ? (
         <li>
-          <StyledLink to={"/signin"} variant="secondary">
+          <StyledLink to={"/signin"} $variant="secondary">
             Sign in
           </StyledLink>
         </li>
@@ -121,9 +121,9 @@ const NavLinks: React.FC = () => {
           <SignOutButton />
         </li>
       )}
-      {userRole === "guest" && (
+      {!userData.accessToken && (
         <li>
-          <StyledLink to={"/register"} variant="primary">
+          <StyledLink to={"/register"} $variant="primary">
             Register
           </StyledLink>
         </li>

@@ -3,25 +3,24 @@ import { useState } from "react";
 import { useUserStore } from "../../stores/useUserStore";
 
 export const useSignIn = () => {
-  const setUserData = useUserStore((state) => state.setUserData);
-  const setKeepSignedIn = useUserStore((state) => state.setKeepSignedIn);
+  const setUserData = useUserStore((state) => state.setState);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
   const signIn = async ({
     email,
     password,
-    keepLoggedIn,
+    keepSignedIn,
   }: {
     email: string;
     password: string;
-    keepLoggedIn: boolean;
+    keepSignedIn: boolean;
   }) => {
     setIsLoading(true);
     try {
-      const data = await apiSignIn(email, password);
-      setUserData(data.data);
-      setKeepSignedIn(keepLoggedIn);
+      const response = await apiSignIn(email, password);
+      setUserData(response.data);
+      setUserData({ keepSignedIn });
     } catch (error) {
       if (error instanceof Error) {
         setIsError(error.message);

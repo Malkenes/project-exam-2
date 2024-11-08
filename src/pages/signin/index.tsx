@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 import { useUserStore } from "../../stores/useUserStore";
 
 export const SignIn: React.FC = () => {
-  const userRole = useUserStore((state) => state.userRole);
-  if (userRole !== "guest") {
+  const userData = useUserStore((state) => state.userData);
+  if (userData.accessToken) {
     return (
       <div>
         <h1>You are already signed in</h1>

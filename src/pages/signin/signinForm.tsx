@@ -2,9 +2,9 @@ import {
   StyledInputContainer,
   StyledCheckContainer,
   StyledErrorContainer,
+  StyledFormError,
 } from "../../components/form/styles";
 import { StyledFullButton } from "../../components/buttons/styles";
-import { StyledSignInForm } from "./styles";
 import { useSignIn } from "./useSignIn";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -13,9 +13,16 @@ import { Loader } from "../../components/loaders";
 
 const schema = yup
   .object({
-    email: yup.string().email("Invalid email format").required(),
-    password: yup.string().min(1, "Password to short").required(),
-    keepLoggedIn: yup.boolean().required(),
+    email: yup
+      .string()
+      .email("Invalid email format")
+      .matches(
+        /^[a-zA-Z0-9._%+-]+@stud\.noroff\.no$/,
+        "Email must be a @stud.noroff.no address",
+      )
+      .required(),
+    password: yup.string().min(8, "Password to short").required(),
+    keepSignedIn: yup.boolean().required(),
   })
   .required();
 
@@ -26,10 +33,11 @@ export const SignInForm: React.FC = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { signIn, isError, isLoading } = useSignIn();
+
   async function onSubmit(data: {
     email: string;
     password: string;
-    keepLoggedIn: boolean;
+    keepSignedIn: boolean;
   }) {
     await signIn(data);
   }
@@ -37,7 +45,7 @@ export const SignInForm: React.FC = () => {
     return <Loader />;
   }
   return (
-    <StyledSignInForm onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <StyledErrorContainer>
         <StyledInputContainer>
           <input
@@ -63,11 +71,11 @@ export const SignInForm: React.FC = () => {
         <p>{errors.password?.message}</p>
       </StyledErrorContainer>
       <StyledCheckContainer>
-        <input type="checkbox" id="keep" {...register("keepLoggedIn")} />
+        <input type="checkbox" id="keep" {...register("keepSignedIn")} />
         <label htmlFor="keep">Keep me signed in</label>
       </StyledCheckContainer>
       <StyledFullButton variant="primary">Sign In</StyledFullButton>
-      <p>{isError}</p>
-    </StyledSignInForm>
+      <StyledFormError>{isError}</StyledFormError>
+    </form>
   );
 };

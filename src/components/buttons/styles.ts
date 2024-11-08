@@ -9,42 +9,42 @@ const buttonTheme = `
 `;
 
 interface StyledButtonProps {
-  variant: "primary" | "secondary";
+  $variant: "primary" | "secondary";
 }
 
 export const StyledLink = styled(Link)<StyledButtonProps>`
   ${buttonTheme}
   background: ${(props) =>
-    props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+    props.$variant === "primary" ? props.theme.colors.primary : "#FFF"};
   border-color: ${(props) =>
-    props.variant === "primary"
+    props.$variant === "primary"
       ? props.theme.colors.primary
       : props.theme.colors.secondary};
   color: ${(props) =>
-    props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+    props.$variant === "primary" ? "#FFF" : props.theme.colors.secondary};
   &:hover {
     background: ${(props) =>
-      props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+      props.$variant === "primary" ? "#FFF" : props.theme.colors.secondary};
     color: ${(props) =>
-      props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+      props.$variant === "primary" ? props.theme.colors.primary : "#FFF"};
   }
 `;
 
 export const StyledButton = styled.button<StyledButtonProps>`
   ${buttonTheme}
   background: ${(props) =>
-    props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+    props.$variant === "primary" ? props.theme.colors.primary : "#FFF"};
   border-color: ${(props) =>
-    props.variant === "primary"
+    props.$variant === "primary"
       ? props.theme.colors.primary
       : props.theme.colors.secondary};
   color: ${(props) =>
-    props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+    props.$variant === "primary" ? "#FFF" : props.theme.colors.secondary};
   &:hover {
     background: ${(props) =>
-      props.variant === "primary" ? "#FFF" : props.theme.colors.secondary};
+      props.$variant === "primary" ? "#FFF" : props.theme.colors.secondary};
     color: ${(props) =>
-      props.variant === "primary" ? props.theme.colors.primary : "#FFF"};
+      props.$variant === "primary" ? props.theme.colors.primary : "#FFF"};
   }
 `;
 

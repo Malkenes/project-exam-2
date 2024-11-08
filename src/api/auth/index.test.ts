@@ -16,6 +16,7 @@ describe("sign in", () => {
         banner: { url: "url", alt: "alt" },
         accessToken: "snansdndeq-sqx",
         venueManager: false,
+        bio: "",
       },
       meta: {},
     };

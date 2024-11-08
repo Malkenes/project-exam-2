@@ -11,7 +11,9 @@ body {
     color: #2F2F33;
     margin: 0;
 }
-
+h2 {
+    font-weight: 500;
+}
 p {
     font-size: 14px;
 }

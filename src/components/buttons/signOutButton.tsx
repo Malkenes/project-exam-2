@@ -8,7 +8,7 @@ export const SignOutButton: React.FC = () => {
 
   return (
     <StyledButton
-      variant="secondary"
+      $variant="secondary"
       onClick={() => {
         reset();
         navigate("/");
