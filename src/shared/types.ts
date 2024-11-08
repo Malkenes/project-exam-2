@@ -45,7 +45,7 @@ export interface RegisterData extends BaseUser {
   password: string;
 }
 export interface SignInResponse {
-  data: SignInUser;
+  data: BaseUser & { accessToken: string };
   meta: Record<string, unknown>;
 }
 export interface RegisterResponse {
