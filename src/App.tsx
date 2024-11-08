@@ -11,6 +11,7 @@ function App() {
             <Route path="signin" element={<pages.SignIn />} />
             <Route path="register" element={<pages.Register />} />
             <Route path="edit/:id" element={<pages.Edit />} />
+            <Route path="profile/:id" element={<pages.Profile />} />
           </Route>
         </Routes>
       </BrowserRouter>

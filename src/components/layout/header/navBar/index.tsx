@@ -98,21 +98,21 @@ const NavLinks: React.FC = () => {
     <S.StyledNavLinks>
       {userData.venueManager ? (
         <li>
-          <Link to={"/"}>Manager Dashboard</Link>
+          <Link to={"/profile/" + userData.name}>Manager Dashboard</Link>
         </li>
       ) : (
         <li>
-          <Link to={"/"}>Become a Venue Manager</Link>
+          <Link to={"/edit/profile"}>Become a Venue Manager</Link>
         </li>
       )}
       {userData.accessToken && (
         <li>
-          <Link to={"/"}>View Bookings</Link>
+          <Link to={"/profile/" + userData.name}>View Bookings</Link>
         </li>
       )}
       {!userData.accessToken ? (
         <li>
-          <StyledLink to={"/signin"} variant="secondary">
+          <StyledLink to={"/signin"} $variant="secondary">
             Sign in
           </StyledLink>
         </li>
@@ -123,7 +123,7 @@ const NavLinks: React.FC = () => {
       )}
       {!userData.accessToken && (
         <li>
-          <StyledLink to={"/register"} variant="primary">
+          <StyledLink to={"/register"} $variant="primary">
             Register
           </StyledLink>
         </li>
