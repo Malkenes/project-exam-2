@@ -5,6 +5,7 @@ import {
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { StyledFormWrapper } from "../../signin/styles";
 import { Location } from "./location";
+import { Information } from "./information";
 import { Media } from "./media";
 import { Pricing } from "./pricing";
 import { Amenities } from "./amenities";
@@ -12,18 +13,20 @@ import { Confirmation } from "./confirmation";
 
 export const MultiSteps: React.FC = () => {
   const step = useMultiStepStore((state) => state.step);
-  const totalSteps: number = 5;
+  const totalSteps: number = 6;
   const renderSteps = () => {
     switch (step) {
       case 1:
         return <Location />;
       case 2:
-        return <Media />;
+        return <Information />;
       case 3:
-        return <Pricing />;
+        return <Media />;
       case 4:
-        return <Amenities />;
+        return <Pricing />;
       case 5:
+        return <Amenities />;
+      case 6:
         return <Confirmation />;
       default:
         break;

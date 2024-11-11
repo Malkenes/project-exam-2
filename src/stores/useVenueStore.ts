@@ -1,6 +1,8 @@
 import { LatLngLiteral } from "leaflet";
 import { create } from "zustand";
 type State = {
+  name: string;
+  description: string;
   position: LatLngLiteral;
   loc: {
     address: string;
@@ -16,6 +18,8 @@ type Actions = {
 };
 
 export const useVenueStore = create<State & Actions>()((set) => ({
+  name: "",
+  description: "",
   position: {
     lat: 0,
     lng: 0,
