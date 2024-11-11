@@ -1,8 +1,10 @@
 import { LatLngLiteral } from "leaflet";
 import { create } from "zustand";
+import { Media } from "../shared/types";
 type State = {
   name: string;
   description: string;
+  media?: Media[];
   position: LatLngLiteral;
   loc: {
     address: string;
@@ -20,6 +22,7 @@ type Actions = {
 export const useVenueStore = create<State & Actions>()((set) => ({
   name: "",
   description: "",
+  Media: [],
   position: {
     lat: 0,
     lng: 0,
