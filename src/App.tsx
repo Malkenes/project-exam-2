@@ -12,6 +12,7 @@ function App() {
             <Route path="register" element={<pages.Register />} />
             <Route path="edit/:id" element={<pages.Edit />} />
             <Route path="profile/:id" element={<pages.Profile />} />
+            <Route path="list_venue" element={<pages.ListVenue />} />
           </Route>
         </Routes>
       </BrowserRouter>
