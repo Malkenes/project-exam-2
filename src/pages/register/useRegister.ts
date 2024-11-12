@@ -1,12 +1,14 @@
 import { register as apiRegister } from "../../api/auth";
+import { createVenue as apiCreateVenue } from "../../api/venues";
 import { useState } from "react";
 import { useMultiStepStore } from "../../stores/useMultiStepStore";
-import { RegisterData, UpdateProfile } from "../../shared/types";
+import { BaseVenue, RegisterData, UpdateProfile } from "../../shared/types";
 import { updateProfile } from "../../api/update";
 import { useUserStore } from "../../stores/useUserStore";
 import { useModalStore } from "../../stores/useModalStore";
 
 export const useRegister = () => {
+  const accessToken = useUserStore((state) => state.userData.accessToken);
   const setUserData = useUserStore((state) => state.setState);
   const openModal = useModalStore((state) => state.openModal);
   const resetSteps = useMultiStepStore((state) => state.reset);
@@ -45,5 +47,21 @@ export const useRegister = () => {
       setIsLoading(false);
     }
   };
-  return { reg, update, isError, isLoading };
+  const createVenue = async (data: BaseVenue) => {
+    setIsLoading(true);
+    try {
+      const result = await apiCreateVenue(accessToken, data);
+      console.log(result);
+      openModal();
+    } catch (error) {
+      if (error instanceof Error) {
+        setIsError(error.message);
+      } else {
+        setIsError("Something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  return { reg, update, createVenue, isError, isLoading };
 };

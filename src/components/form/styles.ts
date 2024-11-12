@@ -45,7 +45,25 @@ export const StyledInputContainer = styled.div`
     transform: translateY(-150%);
   }
 `;
-
+export const StyledLockedInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  input,
+  textarea {
+    font-size: 16px;
+    font-weight: 800;
+    border-radius: 4px;
+    border: 1px solid #59597b;
+    color: #59597b;
+    padding: 0.5rem 1rem;
+    background: #e0e0f5;
+  }
+  textarea {
+    height: 120px;
+    resize: none;
+  }
+`;
 export const StyledCheckContainer = styled.div`
   margin-bottom: 3em;
 `;
@@ -96,4 +114,61 @@ export const StyledButtonContainer = styled.div`
   flex-direction: row-reverse;
   justify-content: space-between;
   margin-bottom: 48px;
+`;
+
+export const StyledFieldSet = styled.fieldset`
+  border: none;
+  legend {
+    font-weight: 800;
+    color: #6c757d;
+  }
+  > div {
+    display: flex;
+    justify-content: space-around;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+  }
+`;
+
+export const StyledFieldSetOption = styled.div<{ $checked: boolean }>`
+  width: 40px;
+  height: 40px;
+  border-radius: 4px;
+  background: ${(props) => props.$checked && props.theme.colors.secondary};
+  color: ${(props) => props.$checked && "white"};
+  input {
+    display: none;
+  }
+  label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+  }
+`;
+
+export const StyledCheckAmenities = styled.div`
+  min-width: 300px;
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 4px;
+  border: solid 0.5px #6c757d;
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 48px;
+  input {
+    display: none;
+    &:checked + label {
+      background: ${(props) => props.theme.colors.secondary};
+    }
+  }
+  label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 56px;
+  }
 `;
