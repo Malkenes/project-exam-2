@@ -8,7 +8,7 @@ import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useVenueStore } from "../../../stores/useVenueStore";
+import { useBoundStore } from "../../../stores/useVenueStore";
 
 const schema = yup
   .object({
@@ -23,19 +23,18 @@ const schema = yup
 export const Information: React.FC = () => {
   const goToNextStep = useMultiStepStore((state) => state.setNext);
   const goToPrevStep = useMultiStepStore((state) => state.setPrev);
-  const { name, description } = useVenueStore();
-  const defaultValues = { name, description };
+  const { venue, setVenueState } = useBoundStore();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues,
+    defaultValues: venue,
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data: { name: string; description: string }) => {
-    useVenueStore.setState({ name: data.name, description: data.description });
+  const onSubmit = (venue: { name: string; description: string }) => {
+    setVenueState(venue);
     goToNextStep();
   };
 

@@ -10,14 +10,20 @@ import { EditVenueManager } from "../../components/form/editVenueManager";
 import { Avatar } from "./../register/forms/avatar";
 import { Banner } from "./../register/forms/banner";
 import { SuccessModal } from "../../components/modals/successModal";
+import { useModalStore } from "../../stores/useModalStore";
 
 export const Edit: React.FC = () => {
+  const reset = useMultiStepStore((state) => state.reset);
+  reset();
+  const closeModal = useModalStore((state) => state.closeModal);
+  closeModal();
   const { id } = useParams();
   const renderEditType = () => {
     switch (id) {
       case "profile":
         return <EditProfile />;
-
+      case "venue":
+        return <EditVenue />;
       default:
         break;
     }
@@ -60,4 +66,11 @@ const EditProfile: React.FC = () => {
       {renderSteps()}
     </StyledFormWrapper>
   );
+};
+
+const EditVenue: React.FC = () => {
+  const { xx } = useParams();
+  console.log(xx);
+
+  return <div>hei</div>;
 };

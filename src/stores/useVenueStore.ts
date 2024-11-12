@@ -1,10 +1,19 @@
 import { LatLngLiteral } from "leaflet";
-import { create } from "zustand";
-import { Media } from "../shared/types";
+import { create, StateCreator } from "zustand";
+import { BaseVenue, Media, Meta, Venue } from "../shared/types";
 type State = {
   name: string;
   description: string;
   media?: Media[];
+  price: number;
+  maxGuests: number;
+  rating: number;
+  meta: {
+    wifi: boolean;
+    parking: boolean;
+    breakfast: boolean;
+    pets: boolean;
+  };
   position: LatLngLiteral;
   loc: {
     address: string;
@@ -23,6 +32,15 @@ export const useVenueStore = create<State & Actions>()((set) => ({
   name: "",
   description: "",
   Media: [],
+  price: 1,
+  maxGuests: 1,
+  rating: 1,
+  meta: {
+    wifi: false,
+    parking: false,
+    breakfast: false,
+    pets: false,
+  },
   position: {
     lat: 0,
     lng: 0,
@@ -59,4 +77,52 @@ export const useVenueStore = create<State & Actions>()((set) => ({
 
       return { loc: { ...state.loc, ...commonFields } };
     }),
+}));
+
+interface VenueSlice {
+  venue: BaseVenue;
+  setVenueState: (fields: Partial<Venue>) => void;
+  setMetaState: (fields: Meta) => void;
+  setMediaState: (fields: Media) => void;
+}
+
+const initialState: BaseVenue = {
+  name: "",
+  description: "",
+  media: [],
+  price: 20,
+  maxGuests: 1,
+  rating: 3,
+  meta: {
+    wifi: false,
+    parking: false,
+    breakfast: false,
+    pets: false,
+  },
+  location: {},
+};
+const createVenueSlice: StateCreator<VenueSlice, [], [], VenueSlice> = (
+  set,
+) => ({
+  venue: initialState,
+  setVenueState: (fields) =>
+    set((state) => ({ venue: { ...state.venue, ...fields } })),
+  setMetaState: (fields) =>
+    set((state) => ({
+      venue: {
+        ...state.venue,
+        meta: { ...state.venue.meta, ...fields },
+      },
+    })),
+  setMediaState: (fields) =>
+    set((state) => ({
+      venue: {
+        ...state.venue,
+        media: state.venue.media ? [...state.venue.media, fields] : [fields],
+      },
+    })),
+});
+
+export const useBoundStore = create<VenueSlice>()((...a) => ({
+  ...createVenueSlice(...a),
 }));

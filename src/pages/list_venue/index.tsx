@@ -1,8 +1,10 @@
+import { SuccessModal } from "../../components/modals/successModal";
 import { MultiSteps } from "./forms";
 
 export const ListVenue: React.FC = () => {
   return (
     <main>
+      <SuccessModal />
       <hgroup>
         <h1>List Venue</h1>
         <p>

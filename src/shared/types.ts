@@ -70,6 +70,17 @@ export interface UpdateProfile {
   banner: Banner;
   venueManager: boolean;
 }
+
+export interface BaseVenue {
+  name: string;
+  description: string;
+  media: Media[];
+  price: number;
+  maxGuests: number;
+  rating: number;
+  meta: Meta;
+  location: GeoLocation;
+}
 export interface Venue {
   id: string;
   name: string;

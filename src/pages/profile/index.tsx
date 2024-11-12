@@ -108,6 +108,7 @@ const ProfileVenues: React.FC = () => {
   return (
     <div>
       <h2>Your Venues</h2>
+      <Link to={"/list_venue"}>List Venue</Link>
       {!venues ? (
         <div>No Venues</div>
       ) : (
@@ -124,7 +125,7 @@ const ProfileVenues: React.FC = () => {
                     )}
                     <S.StyledDate>
                       <h3>{venue.name}</h3>
-                      <Link to={"/edit/booking"}>
+                      <Link to={"/edit/venue?xx=" + venue.id}>
                         <FaRegEdit />
                       </Link>
                     </S.StyledDate>

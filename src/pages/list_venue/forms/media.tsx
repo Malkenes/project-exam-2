@@ -10,7 +10,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Media as typeMedia } from "../../../shared/types";
 import React, { useState } from "react";
-import { useVenueStore } from "../../../stores/useVenueStore";
+import { useBoundStore } from "../../../stores/useVenueStore";
 
 const schema = yup
   .object({
@@ -23,7 +23,7 @@ export const Media: React.FC = () => {
   const goToNextStep = useMultiStepStore((state) => state.setNext);
   const goToPrevStep = useMultiStepStore((state) => state.setPrev);
   const [mediaState, setMediaState] = useState<typeMedia>({ url: "", alt: "" });
-
+  const setMedia = useBoundStore((state) => state.setMediaState);
   const {
     register,
     handleSubmit,
@@ -32,16 +32,8 @@ export const Media: React.FC = () => {
     resolver: yupResolver(schema),
   });
   const onSubmit = () => {
-    handleAddMedia();
-    console.log(useVenueStore.getState().media);
+    setMedia(mediaState);
     setMediaState({ url: "", alt: "" });
-  };
-  const handleAddMedia = () => {
-    useVenueStore.setState((state) => ({
-      media: state.media
-        ? [...state.media, { url: mediaState.url, alt: mediaState.alt }]
-        : [{ url: mediaState.url, alt: mediaState.alt }],
-    }));
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -105,7 +97,9 @@ export const Media: React.FC = () => {
 };
 
 const AddMedia: React.FC = () => {
-  const { media } = useVenueStore();
+  const { venue } = useBoundStore();
+  const media = venue.media;
+
   return (
     <div>
       {media?.map((el, index) => (
