@@ -54,7 +54,7 @@ export const Confirmation: React.FC = () => {
       <div>
         <p>Meta</p>
         {Object.entries(venue.meta)
-          .filter(([value]) => value)
+          .filter(([, value]) => value)
           .map(([key]) => (
             <span key={key}>{key}</span>
           ))}

@@ -11,8 +11,10 @@ export const SuccessModal: React.FC = () => {
       <StyledModal>
         <h2>Success</h2>
         <p>profile updated successfully</p>
-        <Link to={"/"}>go to homepage</Link>
-        <StyledButton onClick={closeModal} variant="secondary">
+        <Link onClick={closeModal} to={"/"}>
+          go to homepage
+        </Link>
+        <StyledButton onClick={closeModal} $variant="secondary">
           I need to do more editing
         </StyledButton>
       </StyledModal>

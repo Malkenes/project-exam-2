@@ -10,20 +10,23 @@ import { EditVenueManager } from "../../components/form/editVenueManager";
 import { Avatar } from "./../register/forms/avatar";
 import { Banner } from "./../register/forms/banner";
 import { SuccessModal } from "../../components/modals/successModal";
+import { BookingForm } from "../venue/form";
+import { DeleteModal } from "../../components/modals/deleteModal";
 import { useModalStore } from "../../stores/useModalStore";
+import { useFetchBooking } from "../../hooks/useFetch";
 
 export const Edit: React.FC = () => {
   const reset = useMultiStepStore((state) => state.reset);
   reset();
-  const closeModal = useModalStore((state) => state.closeModal);
-  closeModal();
-  const { id } = useParams();
+  const { type, id } = useParams();
   const renderEditType = () => {
-    switch (id) {
+    switch (type) {
       case "profile":
         return <EditProfile />;
       case "venue":
-        return <EditVenue />;
+        return <EditVenue id={id} />;
+      case "booking":
+        return <EditBooking id={id} />;
       default:
         break;
     }
@@ -31,8 +34,9 @@ export const Edit: React.FC = () => {
   return (
     <main>
       <SuccessModal />
+      <DeleteModal title="Want to say Goodbye?" id={id} type={type} />
       <hgroup>
-        <h1>Edit {id}</h1>
+        <h1>Edit {type}</h1>
         <p>Where components are tested</p>
       </hgroup>
       <div>{renderEditType()}</div>
@@ -68,9 +72,20 @@ const EditProfile: React.FC = () => {
   );
 };
 
-const EditVenue: React.FC = () => {
-  const { xx } = useParams();
-  console.log(xx);
+const EditVenue: React.FC<{ id: string | undefined }> = (id) => {
+  console.log(id);
 
   return <div>hei</div>;
+};
+
+const EditBooking: React.FC<{ id: string | undefined }> = ({ id = "" }) => {
+  const { openModal } = useModalStore();
+  const { data } = useFetchBooking(id);
+  console.log(data);
+  return (
+    <div>
+      <BookingForm />
+      <button onClick={openModal}>I want to remove my booking</button>
+    </div>
+  );
 };

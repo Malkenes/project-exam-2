@@ -1,4 +1,8 @@
 import { register as apiRegister } from "../../api/auth";
+import {
+  booking as apiBooking,
+  deleteBooking as apiDeleteBooking,
+} from "../../api/booking";
 import { createVenue as apiCreateVenue } from "../../api/venues";
 import { useState } from "react";
 import { useMultiStepStore } from "../../stores/useMultiStepStore";
@@ -47,6 +51,42 @@ export const useRegister = () => {
       setIsLoading(false);
     }
   };
+
+  const createBooking = async (data: {
+    dateFrom: Date;
+    dateTo: Date;
+    guests: number;
+    venueId: string;
+  }) => {
+    setIsLoading(true);
+    try {
+      await apiBooking(accessToken, data);
+      openModal();
+    } catch (error) {
+      if (error instanceof Error) {
+        setIsError(error.message);
+      } else {
+        setIsError("Something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const deleteBooking = async (id: string) => {
+    setIsLoading(true);
+    try {
+      await apiDeleteBooking(accessToken, id);
+    } catch (error) {
+      if (error instanceof Error) {
+        setIsError(error.message);
+      } else {
+        setIsError("Something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const createVenue = async (data: BaseVenue) => {
     setIsLoading(true);
     try {
@@ -63,5 +103,13 @@ export const useRegister = () => {
       setIsLoading(false);
     }
   };
-  return { reg, update, createVenue, isError, isLoading };
+  return {
+    reg,
+    update,
+    createBooking,
+    deleteBooking,
+    createVenue,
+    isError,
+    isLoading,
+  };
 };

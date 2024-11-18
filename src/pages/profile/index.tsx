@@ -117,7 +117,7 @@ const ProfileVenues: React.FC = () => {
             {venues?.map((venue) => (
               <li key={venue.id}>
                 <S.StyledVenue>
-                  <div>
+                  <Link to={"/venue/" + venue.id}>
                     {venue.media[0] ? (
                       <img src={venue.media[0].url} alt={venue.media[0].alt} />
                     ) : (
@@ -125,11 +125,11 @@ const ProfileVenues: React.FC = () => {
                     )}
                     <S.StyledDate>
                       <h3>{venue.name}</h3>
-                      <Link to={"/edit/venue?xx=" + venue.id}>
+                      <Link to={"/edit/venue" + venue.id}>
                         <FaRegEdit />
                       </Link>
                     </S.StyledDate>
-                  </div>
+                  </Link>
                   <BookingsInVenue bookings={venue.bookings} />
                 </S.StyledVenue>
               </li>
@@ -214,7 +214,7 @@ const BookingComponent: React.FC<{ booking: Booking; expired?: boolean }> = ({
           <div>Guests:</div>
           {booking.guests}
         </span>
-        <Link to={"/edit/booking"}>
+        <Link to={"/edit/booking/" + booking.id}>
           <FaRegEdit />
         </Link>
       </div>
