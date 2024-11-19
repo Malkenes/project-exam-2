@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { fetchProfile } from "../api/profile";
+import { getProfile as apiGetProfile } from "../api/profile";
 import { fetchVenue, fetchData as ApiFetchData } from "../api/venues";
 import { useProfileStore } from "../stores/useProfileStore";
 import { useUserStore } from "../stores/useUserStore";
-import { Venue } from "../shared/types";
+import { bookingInVenue, Venue } from "../shared/types";
 import { getBooking } from "../api/booking";
 
 export const useFetch = (name: string | undefined) => {
@@ -14,7 +14,7 @@ export const useFetch = (name: string | undefined) => {
   useEffect(() => {
     const getProfile = async () => {
       try {
-        const response = await fetchProfile(name, accessToken);
+        const response = await apiGetProfile(accessToken, name);
         setProfile(response.data);
         functiontesting();
       } catch (error) {
@@ -81,21 +81,37 @@ export const useFetchVenue = (url: string) => {
 
   return { data, isLoading, isError };
 };
+interface BookingData {
+  id: string;
+  maxGuests: number;
+  price: number;
+  defaultDates: [Date, Date];
+  bookings?: bookingInVenue[];
+}
 
 export const useFetchBooking = (id: string) => {
   const accessToken = useUserStore((state) => state.userData.accessToken);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<BookingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getBooking(accessToken, id);
-        const response2 = await ApiFetchData(
-          `holidaze/venues/${response.data.venue.id}?_bookings=true`,
+        const bookingResponse = await getBooking(accessToken, id);
+        const venueResponse = await ApiFetchData(
+          `holidaze/venues/${bookingResponse.data.venue.id}?_bookings=true`,
         );
-        setData({ booking: response.data, venue: response2.data });
+        setData({
+          id: bookingResponse.data.id,
+          maxGuests: venueResponse.data.maxGuests,
+          price: venueResponse.data.price,
+          defaultDates: [
+            new Date(bookingResponse.data.dateFrom),
+            new Date(bookingResponse.data.dateTo),
+          ],
+          bookings: venueResponse.data.bookings,
+        });
       } catch (error) {
         if (error instanceof Error) {
           setIsError(error.message);

@@ -6,7 +6,7 @@ import {
   StyledInputContainer,
 } from "../../../components/form/styles";
 import { useMultiStepStore } from "../../../stores/useMultiStepStore";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useBoundStore } from "../../../stores/useVenueStore";
@@ -14,6 +14,8 @@ import { useBoundStore } from "../../../stores/useVenueStore";
 const schema = yup
   .object({
     price: yup.number().required(),
+    maxGuests: yup.number().required(),
+    rating: yup.number().required(),
   })
   .required();
 
@@ -21,16 +23,21 @@ export const Pricing: React.FC = () => {
   const goToNextStep = useMultiStepStore((state) => state.setNext);
   const goToPrevStep = useMultiStepStore((state) => state.setPrev);
   const { venue, setVenueState } = useBoundStore();
-
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: venue,
     resolver: yupResolver(schema),
   });
-  const onSubmit = (venue: { price: number }) => {
+
+  const onSubmit = (venue: {
+    price: number;
+    maxGuests: number;
+    rating: number;
+  }) => {
     setVenueState(venue);
     goToNextStep();
   };
@@ -54,17 +61,35 @@ export const Pricing: React.FC = () => {
         </StyledInputContainer>
         <p>{errors.price?.message}</p>
       </StyledErrorContainer>
-      <FormFieldset
-        name="Max Guests"
-        max={10}
-        selectedValue={venue.maxGuests}
-        onChange={(guest) => setVenueState({ maxGuests: guest })}
+      <Controller
+        name="maxGuests"
+        control={control}
+        defaultValue={1}
+        render={({ field: { onChange, value } }) => (
+          <FormFieldset
+            name="Max Guests"
+            max={10}
+            selectedValue={value}
+            onChange={(value) => {
+              onChange(value);
+            }}
+          />
+        )}
       />
-      <FormFieldset
-        name="Rating"
-        max={5}
-        selectedValue={venue.rating}
-        onChange={(rating) => setVenueState({ rating: rating })}
+      <Controller
+        name="rating"
+        control={control}
+        defaultValue={1}
+        render={({ field: { onChange, value } }) => (
+          <FormFieldset
+            name="Rating"
+            max={5}
+            selectedValue={value}
+            onChange={(value) => {
+              onChange(value);
+            }}
+          />
+        )}
       />
       <StyledButtonContainer>
         <StyledButton type="submit" $variant="primary">

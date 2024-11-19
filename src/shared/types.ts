@@ -61,7 +61,10 @@ export interface VenueResponse {
   data: Venue;
   meta: Record<string, unknown>;
 }
-
+export interface BookingResponse {
+  data: Booking;
+  meta: Record<string, unknown>;
+}
 export interface UpdateProfile {
   accessToken: string;
   name: string;

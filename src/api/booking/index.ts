@@ -1,63 +1,61 @@
-export const booking = async (accessToken: string, data: {}) => {
-  const { VITE_NOROFF_API_KEY, VITE_NOROFF_BASE } = import.meta.env;
-  const options: RequestInit = {
-    method: "post",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "X-Noroff-API-Key": VITE_NOROFF_API_KEY,
-      "content-type": "application/json",
-    },
-    body: JSON.stringify(data),
-  };
-  const response = await fetch(`${VITE_NOROFF_BASE}holidaze/bookings`, options);
-  const result = await response.json();
-  if (!response.ok) {
-    const errorMessage: string = result?.errors[0]?.message;
-    throw new Error(errorMessage);
-  }
-  return result;
+import { BookingResponse } from "../../shared/types";
+import { createOptions, handleResponse } from "../../utils/api";
+
+interface updateRequest {
+  dateFrom: Date;
+  dateTo: Date;
+  guests: number;
+}
+
+interface createRequest extends updateRequest {
+  venueId: string;
+}
+
+export const getBooking = async (
+  accessToken: string,
+  id: string,
+): Promise<BookingResponse> => {
+  const options = createOptions("GET", accessToken);
+  const response = await fetch(
+    `${import.meta.env.VITE_NOROFF_BASE}holidaze/bookings/${id}?_venue=true`,
+    options,
+  );
+  return handleResponse(response);
+};
+
+export const createBooking = async (
+  accessToken: string,
+  data: createRequest,
+) => {
+  const options = createOptions("POST", accessToken, data);
+  const response = await fetch(
+    `${import.meta.env.VITE_NOROFF_BASE}holidaze/bookings`,
+    options,
+  );
+  return handleResponse(response);
+};
+
+export const updateBooking = async (
+  accessToken: string,
+  id: string,
+  data: updateRequest,
+) => {
+  const options = createOptions("PUT", accessToken, data);
+  const response = await fetch(
+    `${import.meta.env.VITE_NOROFF_BASE}holidaze/bookings/${id}`,
+    options,
+  );
+  return handleResponse(response);
 };
 
 export const deleteBooking = async (accessToken: string, id: string) => {
-  const { VITE_NOROFF_API_KEY, VITE_NOROFF_BASE } = import.meta.env;
-  const options: RequestInit = {
-    method: "delete",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "X-Noroff-API-Key": VITE_NOROFF_API_KEY,
-      "content-type": "application/json",
-    },
-  };
+  const options = createOptions("DELETE", accessToken);
   const response = await fetch(
-    `${VITE_NOROFF_BASE}holidaze/bookings/${id}`,
+    `${import.meta.env.VITE_NOROFF_BASE}holidaze/bookings/${id}`,
     options,
   );
-  const result = await response.json();
-  if (!response.ok) {
-    const errorMessage: string = result?.errors[0]?.message;
-    throw new Error(errorMessage);
+  if (response.status === 204) {
+    return response;
   }
-  return result;
-};
-
-export const getBooking = async (accessToken: string, id: string) => {
-  const { VITE_NOROFF_API_KEY, VITE_NOROFF_BASE } = import.meta.env;
-  const options: RequestInit = {
-    method: "get",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "X-Noroff-API-Key": VITE_NOROFF_API_KEY,
-      "content-type": "application/json",
-    },
-  };
-  const response = await fetch(
-    `${VITE_NOROFF_BASE}holidaze/bookings/${id}?_venue=true`,
-    options,
-  );
-  const result = await response.json();
-  if (!response.ok) {
-    const errorMessage: string = result?.errors[0]?.message;
-    throw new Error(errorMessage);
-  }
-  return result;
+  return handleResponse(response);
 };

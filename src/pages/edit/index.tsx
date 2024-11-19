@@ -1,23 +1,18 @@
 import { useParams } from "react-router-dom";
-import {
-  StyledProgressContainer,
-  StyledProgressBar,
-} from "./../../components/form/styles";
-import { StyledFormWrapper } from "./../register/styles";
-import { useMultiStepStore } from "./../../stores/useMultiStepStore";
-import { EditPersonal } from "../../components/form/editPersonal";
-import { EditVenueManager } from "../../components/form/editVenueManager";
-import { Avatar } from "./../register/forms/avatar";
-import { Banner } from "./../register/forms/banner";
-import { SuccessModal } from "../../components/modals/successModal";
+import { useFormStore } from "./../../stores/useMultiStepStore";
 import { BookingForm } from "../venue/form";
 import { DeleteModal } from "../../components/modals/deleteModal";
 import { useModalStore } from "../../stores/useModalStore";
 import { useFetchBooking } from "../../hooks/useFetch";
+import { EditProfile } from "./profile";
+import { useEffect } from "react";
 
 export const Edit: React.FC = () => {
-  const reset = useMultiStepStore((state) => state.reset);
-  reset();
+  const reset = useFormStore((state) => state.resetSteps);
+  useEffect(() => {
+    reset();
+  }, [reset]);
+
   const { type, id } = useParams();
   const renderEditType = () => {
     switch (type) {
@@ -33,58 +28,45 @@ export const Edit: React.FC = () => {
   };
   return (
     <main>
-      <SuccessModal />
       <DeleteModal title="Want to say Goodbye?" id={id} type={type} />
-      <hgroup>
-        <h1>Edit {type}</h1>
-        <p>Where components are tested</p>
-      </hgroup>
+      <h1>Edit {type}</h1>
       <div>{renderEditType()}</div>
     </main>
   );
 };
 
-const EditProfile: React.FC = () => {
-  const step = useMultiStepStore((state) => state.step);
-  const totalSteps: number = 4;
-  const renderSteps = () => {
-    switch (step) {
-      case 1:
-        return <EditPersonal />;
-      case 2:
-        return <Avatar />;
-      case 3:
-        return <Banner />;
-      case 4:
-        return <EditVenueManager />;
-      default:
-        break;
-    }
-  };
-
-  return (
-    <StyledFormWrapper>
-      <StyledProgressContainer>
-        <StyledProgressBar $percent={step / totalSteps} />
-      </StyledProgressContainer>
-      {renderSteps()}
-    </StyledFormWrapper>
-  );
-};
-
-const EditVenue: React.FC<{ id: string | undefined }> = (id) => {
+const EditVenue: React.FC<{ id: string | undefined }> = ({ id }) => {
+  const { openModal } = useModalStore();
   console.log(id);
 
-  return <div>hei</div>;
+  return (
+    <div>
+      <button onClick={openModal}>I want to remove my booking</button>
+    </div>
+  );
 };
 
 const EditBooking: React.FC<{ id: string | undefined }> = ({ id = "" }) => {
   const { openModal } = useModalStore();
-  const { data } = useFetchBooking(id);
+  const { data, isLoading } = useFetchBooking(id);
+  if (isLoading) {
+    return <div>...loading</div>;
+  }
+  if (!data) {
+    return <div>ka</div>;
+  }
   console.log(data);
+  console.log(data.price);
   return (
     <div>
-      <BookingForm />
+      <BookingForm
+        price={data.price}
+        maxGuests={data.maxGuests}
+        defaultDates={data.defaultDates}
+        bookings={data.bookings}
+        venueId={data.id}
+        onSubmitAction={console.log("cant update")}
+      />
       <button onClick={openModal}>I want to remove my booking</button>
     </div>
   );

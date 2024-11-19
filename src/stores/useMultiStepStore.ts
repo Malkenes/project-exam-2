@@ -1,7 +1,12 @@
-import { create } from "zustand";
+import { create, StateCreator } from "zustand";
+import { Media } from "../shared/types";
 
 type State = {
   step: number;
+  updateUser: {
+    bio: string;
+    avatar: { url: string; alt: string };
+  };
 };
 
 type Action = {
@@ -11,7 +16,119 @@ type Action = {
 };
 export const useMultiStepStore = create<State & Action>()((set) => ({
   step: 1,
+  updateUser: { avatar: { url: "", alt: "" }, bio: "xd" },
   setPrev: () => set((state) => ({ step: state.step - 1 })),
   setNext: () => set((state) => ({ step: state.step + 1 })),
   reset: () => set((state) => ({ step: (state.step = 1) })),
+}));
+
+interface MultiStepSlice {
+  step: number;
+  setPrev: () => void;
+  setNext: () => void;
+  resetSteps: () => void;
+}
+const createMultiStepSlice: StateCreator<
+  MultiStepSlice,
+  [],
+  [],
+  MultiStepSlice
+> = (set) => ({
+  step: 1,
+  setPrev: () => set((state) => ({ step: state.step - 1 })),
+  setNext: () => set((state) => ({ step: state.step + 1 })),
+  resetSteps: () => set((state) => ({ step: (state.step = 1) })),
+});
+
+interface UpdateUserSlice {
+  updateUser: {
+    bio: string;
+    avatar: Media;
+    banner: Media;
+    venueManager: boolean;
+  };
+  setUpdateUserState: (fields: Partial<UpdateUserSlice["updateUser"]>) => void;
+}
+const createUpdateUserSlice: StateCreator<
+  UpdateUserSlice,
+  [],
+  [],
+  UpdateUserSlice
+> = (set) => ({
+  updateUser: {
+    bio: "",
+    avatar: { url: "", alt: "" },
+    banner: { url: "", alt: "" },
+    venueManager: false,
+  },
+  setUpdateUserState: (fields) =>
+    set((state) => ({ updateUser: { ...state.updateUser, ...fields } })),
+});
+
+interface RegisterUserSlice {
+  registerUser: {
+    name: string;
+    email: string;
+    password: string;
+    bio: string;
+    avatar: Media;
+    banner: Media;
+    venueManager: boolean;
+  };
+  setRegisterUserState: (
+    fields: Partial<RegisterUserSlice["registerUser"]>,
+  ) => void;
+}
+const createRegisterUserSlice: StateCreator<
+  RegisterUserSlice,
+  [],
+  [],
+  RegisterUserSlice
+> = (set) => ({
+  registerUser: {
+    name: "",
+    email: "",
+    password: "",
+    bio: "",
+    avatar: { url: "", alt: "" },
+    banner: { url: "", alt: "" },
+    venueManager: false,
+  },
+  setRegisterUserState: (fields) =>
+    set((state) => ({ registerUser: { ...state.registerUser, ...fields } })),
+});
+
+interface createVenueSlice {
+  createVenue: {
+    name: string;
+    description: string;
+    media?: Media[];
+    price: number;
+    maxGuests: number;
+    rating: number;
+    meta: {
+      wifi: boolean;
+      parking: boolean;
+      breakfast: boolean;
+      pets: boolean;
+    };
+    location: {
+      address: string;
+      city: string;
+      zip: string;
+      country: string;
+      continent: string;
+      lat: number;
+      lng: number;
+    };
+  };
+  setRegisterUserState: (fields: createVenueSlice["createVenue"]) => void;
+}
+
+export const useFormStore = create<
+  MultiStepSlice & UpdateUserSlice & RegisterUserSlice
+>()((...a) => ({
+  ...createMultiStepSlice(...a),
+  ...createUpdateUserSlice(...a),
+  ...createRegisterUserSlice(...a),
 }));

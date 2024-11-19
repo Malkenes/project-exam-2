@@ -125,7 +125,7 @@ const ProfileVenues: React.FC = () => {
                     )}
                     <S.StyledDate>
                       <h3>{venue.name}</h3>
-                      <Link to={"/edit/venue" + venue.id}>
+                      <Link to={"/edit/venue/" + venue.id}>
                         <FaRegEdit />
                       </Link>
                     </S.StyledDate>
