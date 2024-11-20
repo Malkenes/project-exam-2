@@ -1,6 +1,7 @@
 import * as S from "./styles";
 import { StyledInputContainer } from "../styles";
 import { differenceInCalendarDays } from "date-fns";
+import { useMediaQuery } from "../../../hooks/useMediaQuery";
 
 type ValuePiece = Date | null;
 
@@ -29,6 +30,7 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
     }
     return false;
   };
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
 
   return (
     <S.CalendarContainer>
@@ -36,9 +38,12 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
         onChange={onChange}
         showNeighboringMonth={false}
         selectRange={true}
-        showDoubleView={true}
+        showDoubleView={!isSmallScreen}
+        minDate={new Date()}
         tileDisabled={tileDisabled}
         value={value}
+        prev2Label={null}
+        next2Label={null}
       />
       <div>
         <h3>Travel Date</h3>

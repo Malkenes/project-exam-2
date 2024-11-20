@@ -14,8 +14,6 @@ export const StyledCalendar = styled(Calendar)`
   border: none;
   font-family: inherit;
   padding: 8px;
-  .react-calendar__navigation {
-  }
 
   .react-calendar__navigation button {
     font-size: 24px;
@@ -35,7 +33,8 @@ export const StyledCalendar = styled(Calendar)`
     margin: 4px 0;
     background: none;
     color: #4a4a4a;
-    &:hover {
+    &:hover,
+    &:focus {
       background: ${(props) => props.theme.colors.secondary};
       color: white;
       border-radius: 4px;
@@ -46,11 +45,6 @@ export const StyledCalendar = styled(Calendar)`
   .react-calendar__tile--hover {
     background-color: rgba(139, 139, 223, 0.25);
     color: black;
-  }
-
-  .react-calendar__tile--range {
-    background-color: #e2e8fc;
-    color: #4a4a4a;
   }
 
   .react-calendar__tile--active {
@@ -66,32 +60,14 @@ export const StyledCalendar = styled(Calendar)`
     margin: 0;
   }
 
-  .react-calendar__tile--hasActive:enabled:hover,
-  .react-calendar__tile--hasActive:enabled:focus {
-    background: ${(props) => props.theme.colors.secondary};
-  }
   .react-calendar__viewContainer {
     gap: 16px;
-    flex-direction: column;
-    align-items: center;
-    > * {
-      width: 100%;
-      max-width: 350px;
-    }
   }
   .react-calendar__tile:disabled {
     text-decoration-line: line-through;
     color: #6c757d;
     &:hover {
       background: none;
-    }
-  }
-  @media (min-width: 786px) {
-    .react-calendar__viewContainer {
-      flex-direction: row;
-      > * {
-        width: 50%;
-      }
     }
   }
 `;

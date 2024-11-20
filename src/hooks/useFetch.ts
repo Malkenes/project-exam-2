@@ -44,12 +44,10 @@ export const functiontesting = async () => {
   const updatedVenues = await Promise.all(
     venues.map(async (venue) => {
       const bookings = await fetchVenue(venue.id);
-      console.log(bookings);
       return bookings.data;
     }),
   );
 
-  console.log(updatedVenues);
   useProfileStore.setState({ venues: updatedVenues });
 };
 
@@ -83,6 +81,7 @@ export const useFetchVenue = (url: string) => {
 };
 interface BookingData {
   id: string;
+  guests: number;
   maxGuests: number;
   price: number;
   defaultDates: [Date, Date];
@@ -111,6 +110,7 @@ export const useFetchBooking = (id: string) => {
             new Date(bookingResponse.data.dateTo),
           ],
           bookings: venueResponse.data.bookings,
+          guests: bookingResponse.data.guests,
         });
       } catch (error) {
         if (error instanceof Error) {
@@ -123,6 +123,34 @@ export const useFetchBooking = (id: string) => {
       }
     };
 
+    if (id) {
+      fetchData();
+    }
+  }, [id]);
+
+  return { data, isLoading, isError };
+};
+
+export const useFetchSingleVenue = (id: string) => {
+  const [data, setData] = useState<Venue | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await ApiFetchData(`holidaze/venues/${id}`);
+        setData(response.data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setIsError(error.message);
+        } else {
+          setIsError("Something went wrong");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
     if (id) {
       fetchData();
     }

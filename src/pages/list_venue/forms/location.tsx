@@ -4,63 +4,91 @@ import {
   StyledButtonContainer,
   StyledInputContainer,
 } from "../../../components/form/styles";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 
 import "Leaflet/dist/leaflet.css";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 
 import { useVenueStore } from "../../../stores/useVenueStore";
+import { useForm } from "react-hook-form";
 
-export const Location: React.FC = () => {
-  const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const loc = useVenueStore((state) => state.loc);
-  const updateLoc = useVenueStore((state) => state.updateLoc);
+interface Props {
+  onSubmit: (data: {
+    location: {
+      continent?: string;
+      country?: string;
+      city?: string;
+      zip?: string;
+      address?: string;
+      lat?: number;
+      lng?: number;
+    };
+  }) => void;
+  defaultValues?: {
+    continent?: string;
+    country?: string;
+    city?: string;
+    zip?: string;
+    address?: string;
+    lat?: number;
+    lng?: number;
+  };
+}
+
+export const Location: React.FC<Props> = ({ onSubmit, defaultValues }) => {
+  const { register, handleSubmit } = useForm({
+    defaultValues,
+  });
+  const handleFormSubmit = (data: {
+    continent?: string;
+    country?: string;
+    city?: string;
+    zip?: string;
+    address?: string;
+  }) => {
+    onSubmit({ location: data });
+  };
+
   return (
-    <form onSubmit={goToNextStep} style={{ display: "flex" }}>
+    <form onSubmit={handleSubmit(handleFormSubmit)} style={{ display: "flex" }}>
       <Map />
       <div>
         <StyledInputContainer>
-          <input type="text" placeholder="Continent" id="continent" />
+          <input
+            type="text"
+            placeholder="Continent"
+            id="continent"
+            {...register("continent")}
+          />
           <label htmlFor="continent">Continent</label>
         </StyledInputContainer>
         <StyledInputContainer>
           <input
-            value={loc.country}
-            onChange={(e) => updateLoc({ country: e.target.value })}
             type="text"
             placeholder="Country"
             id="country"
+            {...register("country")}
           />
           <label htmlFor="country">Country</label>
         </StyledInputContainer>
         <StyledInputContainer>
           <input
-            value={loc.city}
-            onChange={(e) => updateLoc({ city: e.target.value })}
             type="text"
             placeholder="City"
             id="city"
+            {...register("city")}
           />
-
           <label htmlFor="city">City</label>
         </StyledInputContainer>
         <StyledInputContainer>
-          <input
-            value={loc.zip}
-            onChange={(e) => updateLoc({ zip: e.target.value })}
-            type="text"
-            placeholder="Zip"
-            id="zip"
-          />
+          <input type="text" placeholder="Zip" id="zip" {...register("zip")} />
           <label htmlFor="zip">Zip</label>
         </StyledInputContainer>
         <StyledInputContainer>
           <input
-            value={loc.address}
-            onChange={(e) => updateLoc({ address: e.target.value })}
             type="text"
             placeholder="Address"
             id="address"
+            {...register("address")}
           />
           <label htmlFor="address">Address</label>
         </StyledInputContainer>

@@ -98,8 +98,8 @@ const createRegisterUserSlice: StateCreator<
     set((state) => ({ registerUser: { ...state.registerUser, ...fields } })),
 });
 
-interface createVenueSlice {
-  createVenue: {
+interface VenueSlice {
+  venue: {
     name: string;
     description: string;
     media?: Media[];
@@ -112,23 +112,45 @@ interface createVenueSlice {
       breakfast: boolean;
       pets: boolean;
     };
-    location: {
-      address: string;
-      city: string;
-      zip: string;
-      country: string;
-      continent: string;
-      lat: number;
-      lng: number;
+    location?: {
+      address?: string;
+      city?: string;
+      zip?: string;
+      country?: string;
+      continent?: string;
+      lat?: number;
+      lng?: number;
     };
   };
-  setRegisterUserState: (fields: createVenueSlice["createVenue"]) => void;
+  setVenueState: (fields: Partial<VenueSlice["venue"]>) => void;
 }
+const createVenueSlice: StateCreator<VenueSlice, [], [], VenueSlice> = (
+  set,
+) => ({
+  venue: {
+    name: "",
+    description: "",
+    media: [],
+    price: 20,
+    maxGuests: 1,
+    rating: 3,
+    meta: {
+      wifi: false,
+      parking: false,
+      breakfast: false,
+      pets: false,
+    },
+    location: {},
+  },
+  setVenueState: (fields) =>
+    set((state) => ({ venue: { ...state.venue, ...fields } })),
+});
 
 export const useFormStore = create<
-  MultiStepSlice & UpdateUserSlice & RegisterUserSlice
+  MultiStepSlice & UpdateUserSlice & RegisterUserSlice & VenueSlice
 >()((...a) => ({
   ...createMultiStepSlice(...a),
   ...createUpdateUserSlice(...a),
   ...createRegisterUserSlice(...a),
+  ...createVenueSlice(...a),
 }));

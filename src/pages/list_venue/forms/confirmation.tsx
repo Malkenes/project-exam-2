@@ -1,36 +1,60 @@
 import { StyledButton } from "../../../components/buttons/styles";
 import {
   StyledButtonContainer,
-  StyledFormError,
   StyledLockedInputContainer,
 } from "../../../components/form/styles";
-import { BaseVenue } from "../../../shared/types";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
-import { useBoundStore } from "../../../stores/useVenueStore";
+import { BaseVenue, GeoLocation } from "../../../shared/types";
 import { useForm } from "react-hook-form";
-import { useRegister } from "../../register/useRegister";
-import { Loader } from "../../../components/loaders";
 
-export const Confirmation: React.FC = () => {
-  const goToPrevStep = useMultiStepStore((state) => state.setPrev);
-  const { venue } = useBoundStore();
-  console.log(useBoundStore.getState().venue);
-  const { createVenue, isError, isLoading } = useRegister();
+interface Props {
+  onSubmit: () => void;
+  onBack?: () => void;
+  defaultValues: BaseVenue;
+}
 
+export const Confirmation: React.FC<Props> = ({
+  onSubmit,
+  onBack,
+  defaultValues,
+}) => {
   const { register, handleSubmit } = useForm({
-    defaultValues: venue,
+    defaultValues,
   });
-  const onSubmit = (dataPackage: BaseVenue) => {
-    console.log(dataPackage);
-    createVenue(dataPackage);
+  const handleFormSubmit = () => {
+    onSubmit();
+  };
+  const getlocationDetails = (location?: GeoLocation) => {
+    let label = "Location";
+    let value = "unknown";
+    if (!location) {
+      return { label, value };
+    }
+    switch (true) {
+      case !!location.address:
+        label = "Address";
+        value = location.address;
+        break;
+      case !!location.city:
+        label = "City";
+        value = location.city;
+        break;
+      case !!location.country:
+        label = "Country";
+        value = location.country;
+        break;
+      default:
+        break;
+    }
+    return { label, value };
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
+  const { label, value } = getlocationDetails(defaultValues.location);
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <StyledLockedInputContainer>
+        <label htmlFor="location">{label}</label>
+        <input disabled type="text" id="location" value={value} />
+      </StyledLockedInputContainer>
       <StyledLockedInputContainer>
         <label htmlFor="name">name</label>
         <input disabled type="text" id="name" {...register("name")} />
@@ -53,14 +77,14 @@ export const Confirmation: React.FC = () => {
       </StyledLockedInputContainer>
       <div>
         <p>Meta</p>
-        {Object.entries(venue.meta)
+        {Object.entries(defaultValues.meta)
           .filter(([, value]) => value)
           .map(([key]) => (
             <span key={key}>{key}</span>
           ))}
       </div>
       <div>
-        {venue.media?.map((el, index) => (
+        {defaultValues.media?.map((el, index) => (
           <img
             key={index}
             src={el.url}
@@ -73,11 +97,10 @@ export const Confirmation: React.FC = () => {
         <StyledButton type="submit" $variant="primary">
           Continue
         </StyledButton>
-        <StyledButton type="button" onClick={goToPrevStep} $variant="secondary">
+        <StyledButton type="button" onClick={onBack} $variant="secondary">
           Back
         </StyledButton>
       </StyledButtonContainer>
-      <StyledFormError>{isError}</StyledFormError>
     </form>
   );
 };

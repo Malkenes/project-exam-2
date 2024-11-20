@@ -77,12 +77,12 @@ export interface UpdateProfile {
 export interface BaseVenue {
   name: string;
   description: string;
-  media: Media[];
+  media?: Media[];
   price: number;
   maxGuests: number;
   rating: number;
   meta: Meta;
-  location: GeoLocation;
+  location?: GeoLocation;
 }
 export interface Venue {
   id: string;
@@ -117,7 +117,7 @@ export interface Booking {
   id: string;
   dateFrom: string;
   dateTo: string;
-  guests: string;
+  guests: number;
   created: string;
   updated: string;
   venue: Venue;

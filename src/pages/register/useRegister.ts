@@ -2,9 +2,11 @@ import { register as apiRegister } from "../../api/auth";
 import {
   createBooking as apiBooking,
   deleteBooking as apiDeleteBooking,
+  updateBooking as apiUpdateBooking,
 } from "../../api/booking";
 import {
   createVenue as apiCreateVenue,
+  updateVenue as apiUpdateVenue,
   deleteVenue as apiDeleteVenue,
 } from "../../api/venues";
 import { useState } from "react";
@@ -79,6 +81,28 @@ export const useRegister = () => {
       setIsLoading(false);
     }
   };
+  const updateBooking = async (
+    id: string,
+    data: {
+      dateFrom: Date;
+      dateTo: Date;
+      guests: number;
+    },
+  ) => {
+    setIsLoading(true);
+    try {
+      await apiUpdateBooking(accessToken, id, data);
+      setIsSuccessful(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        setIsError(error.message);
+      } else {
+        setIsError("Something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
   const deleteBooking = async (id: string) => {
     setIsLoading(true);
     try {
@@ -98,9 +122,23 @@ export const useRegister = () => {
   const createVenue = async (data: BaseVenue) => {
     setIsLoading(true);
     try {
-      const result = await apiCreateVenue(accessToken, data);
-      console.log(result);
-      openModal();
+      await apiCreateVenue(accessToken, data);
+      setIsSuccessful(true);
+    } catch (error) {
+      if (error instanceof Error) {
+        setIsError(error.message);
+      } else {
+        setIsError("Something went wrong");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const updateVenue = async (id: string, data: BaseVenue) => {
+    setIsLoading(true);
+    try {
+      await apiUpdateVenue(accessToken, id, data);
+      setIsSuccessful(true);
     } catch (error) {
       if (error instanceof Error) {
         setIsError(error.message);
@@ -129,8 +167,10 @@ export const useRegister = () => {
     reg,
     updateProfile,
     createBooking,
+    updateBooking,
     deleteBooking,
     createVenue,
+    updateVenue,
     deleteVenue,
     isError,
     isLoading,

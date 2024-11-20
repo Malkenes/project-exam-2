@@ -4,11 +4,9 @@ import {
   StyledErrorContainer,
   StyledInputContainer,
 } from "../../../components/form/styles";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useBoundStore } from "../../../stores/useVenueStore";
 
 const schema = yup
   .object({
@@ -20,26 +18,31 @@ const schema = yup
   })
   .required();
 
-export const Information: React.FC = () => {
-  const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const goToPrevStep = useMultiStepStore((state) => state.setPrev);
-  const { venue, setVenueState } = useBoundStore();
+interface Props {
+  onSubmit: (data: { name: string; description: string }) => void;
+  onBack?: () => void;
+  defaultValues?: { name: string; description: string };
+}
 
+export const Information: React.FC<Props> = ({
+  onSubmit,
+  onBack,
+  defaultValues,
+}) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    defaultValues: venue,
+    defaultValues,
     resolver: yupResolver(schema),
   });
-  const onSubmit = (venue: { name: string; description: string }) => {
-    setVenueState(venue);
-    goToNextStep();
+  const handleFormSubmit = (data: { name: string; description: string }) => {
+    onSubmit(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <h2>Basic Information</h2>
       <div style={{ display: "flex" }}>
         <div style={{ width: "50%" }}>
@@ -75,11 +78,7 @@ export const Information: React.FC = () => {
             <StyledButton type="submit" $variant="primary">
               Continue
             </StyledButton>
-            <StyledButton
-              type="button"
-              onClick={goToPrevStep}
-              $variant="secondary"
-            >
+            <StyledButton type="button" onClick={onBack} $variant="secondary">
               Back
             </StyledButton>
           </StyledButtonContainer>

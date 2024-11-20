@@ -24,6 +24,7 @@ interface Props {
   price: number;
   bookings?: bookingInVenue[];
   defaultDates?: Value;
+  guests?: number;
   onSubmitAction: (data: BookingData) => Promise<void>;
 }
 
@@ -37,6 +38,7 @@ export const BookingForm: React.FC<Props> = ({
   price,
   venueId,
   defaultDates = [null, null],
+  guests = 1,
   onSubmitAction,
 }) => {
   const { booking, setGuests } = useBoundStore();
@@ -103,7 +105,7 @@ export const BookingForm: React.FC<Props> = ({
         <Controller
           name="guests"
           control={control}
-          defaultValue={0}
+          defaultValue={guests}
           render={({ field: { onChange, value } }) => (
             <FormFieldset
               name="Guests"

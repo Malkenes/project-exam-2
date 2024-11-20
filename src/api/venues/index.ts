@@ -52,6 +52,18 @@ export const createVenue = async (
   return handleResponse(response);
 };
 
+export const updateVenue = async (
+  accessToken: string,
+  id: string,
+  data: object,
+) => {
+  const options = createOptions("PUT", accessToken, data);
+  const response = await fetch(
+    `${import.meta.env.VITE_NOROFF_BASE}holidaze/venues/${id}`,
+    options,
+  );
+  return handleResponse(response);
+};
 export const deleteVenue = async (accessToken: string, id: string) => {
   const options = createOptions("DELETE", accessToken);
   const response = await fetch(
