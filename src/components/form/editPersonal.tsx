@@ -1,6 +1,4 @@
 import { useForm } from "react-hook-form";
-import { useMultiStepStore } from "../../stores/useMultiStepStore";
-import { useUserStore } from "../../stores/useUserStore";
 import { StyledButton } from "../buttons/styles";
 import {
   StyledErrorContainer,
@@ -16,10 +14,15 @@ const schema = yup
   })
   .required();
 
-export const EditPersonal: React.FC = () => {
-  const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const updateStore = useUserStore((state) => state.setState);
-  const defaultValues = useUserStore((state) => state.userData);
+interface Props {
+  onSubmit: (bio: { bio?: string }) => void;
+  defaultValues?: { bio: string; name: string; email: string };
+}
+
+export const EditPersonal: React.FC<Props> = ({
+  onSubmit,
+  defaultValues = { bio: "", name: "", email: "" },
+}) => {
   const {
     register,
     handleSubmit,
@@ -28,13 +31,11 @@ export const EditPersonal: React.FC = () => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data: { bio?: string }) => {
-    console.log(data);
-    updateStore(data);
-    goToNextStep();
+  const handleFormSubmit = (data: { bio?: string }) => {
+    onSubmit(data);
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <h2>Personal Information</h2>
       <StyledErrorContainer>
         <StyledInputContainer>
@@ -68,7 +69,7 @@ export const EditPersonal: React.FC = () => {
         <p>{errors.bio?.message}</p>
       </StyledErrorContainer>
       <StyledButtonContainer>
-        <StyledButton type="submit" variant="primary">
+        <StyledButton type="submit" $variant="primary">
           Continue
         </StyledButton>
       </StyledButtonContainer>

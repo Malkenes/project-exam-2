@@ -3,9 +3,7 @@ import {
   StyledErrorContainer,
   StyledButtonContainer,
 } from "../../../components/form/styles";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
-import { useUserStore } from "../../../stores/useUserStore";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { StyledButton } from "../../../components/buttons/styles";
@@ -26,10 +24,22 @@ const schema = yup
   })
   .required();
 
-export const Personal: React.FC = () => {
-  const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const updateStore = useUserStore((state) => state.setRegisterState);
-  const defaultValues = useUserStore((state) => state.registerData);
+interface Props {
+  onSubmit: (data: {
+    name: string;
+    email: string;
+    password: string;
+    bio?: string;
+  }) => void;
+  defaultValues?: {
+    name: string;
+    email: string;
+    password: string;
+    bio?: string;
+  };
+}
+
+export const Personal: React.FC<Props> = ({ onSubmit, defaultValues }) => {
   const {
     register,
     handleSubmit,
@@ -38,17 +48,16 @@ export const Personal: React.FC = () => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data: {
+  const handleFormSubmit = (data: {
     name: string;
     email: string;
     password: string;
     bio?: string;
   }) => {
-    updateStore(data);
-    goToNextStep();
+    onSubmit(data);
   };
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <h2>Personal Information</h2>
       <StyledErrorContainer>
         <StyledInputContainer>
@@ -94,7 +103,7 @@ export const Personal: React.FC = () => {
         <p>{errors.bio?.message}</p>
       </StyledErrorContainer>
       <StyledButtonContainer>
-        <StyledButton type="submit" variant="primary">
+        <StyledButton type="submit" $variant="primary">
           Continue
         </StyledButton>
       </StyledButtonContainer>

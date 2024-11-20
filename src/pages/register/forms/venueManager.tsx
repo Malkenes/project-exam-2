@@ -1,38 +1,32 @@
-import {
-  StyledButtonContainer,
-  StyledCheckContainer,
-  StyledFormError,
-} from "../../../components/form/styles";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
-import { useUserStore } from "../../../stores/useUserStore";
 import { useForm } from "react-hook-form";
-import { useRegister } from "../useRegister";
-import { Loader } from "../../../components/loaders";
-import { StyledButton } from "../../../components/buttons/styles";
 import { StyledOrderedList } from "../styles";
-import { RegisterData } from "../../../shared/types";
+import { StyledButton } from "../../../components/buttons/styles";
+import {
+  StyledCheckContainer,
+  StyledButtonContainer,
+} from "../../../components/form/styles";
 
-export const VenueManager: React.FC = () => {
-  const goToPrevStep = useMultiStepStore((state) => state.setPrev);
-  const updateStore = useUserStore((state) => state.setRegisterState);
-  const defaultValues = useUserStore((state) => state.registerData);
+interface Props {
+  onSubmit: (venueManager: { venueManager: boolean }) => void;
+  onBack?: () => void;
+  defaultValues?: { venueManager: boolean };
+}
+
+export const VenueManager: React.FC<Props> = ({
+  onSubmit,
+  onBack,
+  defaultValues,
+}) => {
   const { register, handleSubmit } = useForm({
     defaultValues,
   });
-  const { reg, isError, isLoading } = useRegister();
 
-  const onSubmit = (data: RegisterData) => {
-    updateStore(data);
-    const datatoApi = useUserStore.getState().getRegisterValues();
-    reg(datatoApi);
+  const handleFormSubmit = (data: { venueManager: boolean }) => {
+    onSubmit(data);
   };
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <h2>Become a venue manager (Optional)</h2>
       <StyledOrderedList>
         <li>
@@ -89,14 +83,13 @@ export const VenueManager: React.FC = () => {
         <label htmlFor="venuemanager">I want to be a venue manager</label>
       </StyledCheckContainer>
       <StyledButtonContainer>
-        <StyledButton type="submit" variant="primary">
+        <StyledButton type="submit" $variant="primary">
           Submit
         </StyledButton>
-        <StyledButton type="button" onClick={goToPrevStep} variant="secondary">
+        <StyledButton type="button" onClick={onBack} $variant="secondary">
           Back
         </StyledButton>
       </StyledButtonContainer>
-      <StyledFormError>{isError}</StyledFormError>
     </form>
   );
 };

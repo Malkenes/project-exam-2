@@ -1,4 +1,4 @@
-import { Avatar as typeAvatar } from "../../../shared/types";
+import { Avatar as TypeAvatar } from "../../../shared/types";
 import {
   StyledInputContainer,
   StyledErrorContainer,
@@ -6,25 +6,28 @@ import {
   StyledButtonContainer,
 } from "../../../components/form/styles";
 import { StyledButton } from "../../../components/buttons/styles";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { useForm } from "react-hook-form";
-import { useUserStore } from "../../../stores/useUserStore";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useState } from "react";
 
 const schema = yup
   .object({
-    url: yup.string().url(),
-    alt: yup.string().max(120, "to long"),
+    url: yup.string().url("Invalid URL"),
+    alt: yup.string().max(120, "Description is to long"),
   })
   .required();
 
-export const Avatar: React.FC = () => {
-  const goToPrevStep = useMultiStepStore((state) => state.setPrev);
-  const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const updateStore = useUserStore((state) => state.setAvatarState);
-  const defaultValues = useUserStore((state) => state.userData.avatar);
+interface Props {
+  onSubmit: (avatar: { avatar?: TypeAvatar }) => void;
+  onBack?: () => void;
+  defaultValues?: TypeAvatar;
+}
+export const Avatar: React.FC<Props> = ({
+  onSubmit,
+  onBack,
+  defaultValues = { url: "", alt: "" },
+}) => {
   const [avatarUrl, setAvatarUrl] = useState(defaultValues.url);
   const {
     register,
@@ -34,13 +37,17 @@ export const Avatar: React.FC = () => {
     defaultValues,
     resolver: yupResolver(schema),
   });
-  const onSubmit = (avatar: typeAvatar) => {
-    updateStore(avatar);
-    goToNextStep();
+
+  const handleFormSubmit = (data: { url?: string; alt?: string }) => {
+    if (data.url) {
+      onSubmit({ avatar: data });
+    } else {
+      onSubmit({ avatar: undefined });
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
       <h2>Avatar Information (Optional)</h2>
       <StyledPreviewAvatar>
         <img src={avatarUrl} alt="Avatar preview" />
@@ -66,10 +73,10 @@ export const Avatar: React.FC = () => {
         <p>{errors.alt?.message}</p>
       </StyledErrorContainer>
       <StyledButtonContainer>
-        <StyledButton type="submit" variant="primary">
+        <StyledButton type="submit" $variant="primary">
           Continue
         </StyledButton>
-        <StyledButton type="button" onClick={goToPrevStep} variant="secondary">
+        <StyledButton type="button" onClick={onBack} $variant="secondary">
           Back
         </StyledButton>
       </StyledButtonContainer>

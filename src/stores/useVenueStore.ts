@@ -123,6 +123,30 @@ const createVenueSlice: StateCreator<VenueSlice, [], [], VenueSlice> = (
     })),
 });
 
-export const useBoundStore = create<VenueSlice>()((...a) => ({
+interface BookingSlice {
+  booking: {
+    venueId: string;
+    dateFrom: string;
+    dateTo: string;
+    guests: number;
+  };
+  setGuests: (amount: number) => void;
+}
+
+const createBookingSlice: StateCreator<BookingSlice, [], [], BookingSlice> = (
+  set,
+) => ({
+  booking: {
+    venueId: "",
+    dateFrom: "",
+    dateTo: "",
+    guests: 0,
+  },
+  setGuests: (amount) =>
+    set((state) => ({ booking: { ...state.booking, guests: amount } })),
+});
+
+export const useBoundStore = create<VenueSlice & BookingSlice>()((...a) => ({
   ...createVenueSlice(...a),
+  ...createBookingSlice(...a),
 }));

@@ -4,24 +4,41 @@ import {
   StyledButtonContainer,
   StyledCheckAmenities,
 } from "../../../components/form/styles";
-import { useMultiStepStore } from "../../../stores/useMultiStepStore";
 import { Meta } from "../../../shared/types";
-import { useBoundStore } from "../../../stores/useVenueStore";
 
-export const Amenities: React.FC = () => {
-  const goToNextStep = useMultiStepStore((state) => state.setNext);
-  const goToPrevStep = useMultiStepStore((state) => state.setPrev);
-  const { setMetaState, venue } = useBoundStore();
-  const { register, handleSubmit } = useForm<Meta>({
-    defaultValues: venue.meta,
+interface Props {
+  onSubmit: (meta: { meta: Meta }) => void;
+  onBack?: () => void;
+  defaultValues?: {
+    wifi: boolean;
+    parking: boolean;
+    breakfast: boolean;
+    pets: boolean;
+  };
+}
+
+export const Amenities: React.FC<Props> = ({
+  onSubmit,
+  onBack,
+  defaultValues,
+}) => {
+  const { register, handleSubmit } = useForm({
+    defaultValues,
   });
-  const onSubmit = (meta: Meta) => {
-    setMetaState(meta);
-    goToNextStep();
+  const handleFormSubmit = (data: {
+    wifi: boolean;
+    parking: boolean;
+    breakfast: boolean;
+    pets: boolean;
+  }) => {
+    onSubmit({ meta: data });
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} style={{ maxWidth: "700px" }}>
+    <form
+      onSubmit={handleSubmit(handleFormSubmit)}
+      style={{ maxWidth: "700px" }}
+    >
       <h2>Amenities (optional)</h2>
       <p>
         Make your venue stand out by highlighting the key features that guests
@@ -49,7 +66,7 @@ export const Amenities: React.FC = () => {
         <StyledButton type="submit" $variant="primary">
           Continue
         </StyledButton>
-        <StyledButton type="button" onClick={goToPrevStep} $variant="secondary">
+        <StyledButton type="button" onClick={onBack} $variant="secondary">
           Back
         </StyledButton>
       </StyledButtonContainer>

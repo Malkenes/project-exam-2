@@ -1,23 +1,62 @@
+import { Loader } from "../../../components/loaders";
+import { useFetchSingleVenue } from "../../../hooks/useFetch";
+import { useRegister } from "../../register/useRegister";
+import { useFormStore } from "../../../stores/useMultiStepStore";
+import { Venue } from "../../../shared/types";
+import { useEffect } from "react";
 import {
   StyledProgressContainer,
   StyledProgressBar,
 } from "../../../components/form/styles";
-import { useFormStore } from "../../../stores/useMultiStepStore";
+import { Location } from "../../list_venue/forms/location";
+import { Amenities } from "../../list_venue/forms/amenities";
+import { Confirmation } from "../../list_venue/forms/confirmation";
+import { Information } from "../../list_venue/forms/information";
+import { Media } from "../../list_venue/forms/media";
+import { Pricing } from "../../list_venue/forms/pricing";
 import { StyledFormWrapper } from "../../signin/styles";
-import { Location } from "./location";
-import { Information } from "./information";
-import { Media } from "./media";
-import { Pricing } from "./pricing";
-import { Amenities } from "./amenities";
-import { Confirmation } from "./confirmation";
-import { useRegister } from "../../register/useRegister";
-import { Loader } from "../../../components/loaders";
+import { Link } from "react-router-dom";
 
-export const MultiSteps: React.FC = () => {
-  const { createVenue, isError, isLoading, isSuccessful } = useRegister();
+export const EditVenue: React.FC<{ id: string | undefined }> = ({
+  id = "",
+}) => {
+  const { data, isLoading, isError } = useFetchSingleVenue(id);
 
+  if (isLoading) {
+    return <div>...loading</div>;
+  }
+  if (!data) {
+    return <div>ka</div>;
+  }
+
+  return (
+    <div>
+      <FormContainer data={data} />
+      <p>{isError}</p>
+    </div>
+  );
+};
+
+interface Props {
+  data: Venue;
+}
+const FormContainer: React.FC<Props> = ({ data }) => {
+  const { updateVenue, isError, isLoading, isSuccessful } = useRegister();
   const { step, venue, setNext, setPrev, setVenueState } = useFormStore();
-  console.log(venue);
+
+  useEffect(() => {
+    setVenueState({
+      name: data.name,
+      description: data.description,
+      media: data.media,
+      price: data.price,
+      maxGuests: data.maxGuests,
+      rating: data.rating,
+      meta: data.meta,
+      location: data.location,
+    });
+  }, [data, setVenueState]);
+
   const totalSteps: number = 6;
   const renderSteps = () => {
     switch (step) {
@@ -83,7 +122,7 @@ export const MultiSteps: React.FC = () => {
         return (
           <Confirmation
             onSubmit={() => {
-              createVenue(venue);
+              updateVenue(data.id, venue);
             }}
             onBack={() => setPrev()}
             defaultValues={venue}
@@ -100,11 +139,11 @@ export const MultiSteps: React.FC = () => {
   if (isSuccessful) {
     return (
       <div>
-        <h2>Succesfully Created a Venue</h2>
+        <h2>Succesfully updated your Venue</h2>
+        <Link to={"/venue/" + data.id}>View Venue</Link>
       </div>
     );
   }
-
   return (
     <StyledFormWrapper>
       <StyledProgressContainer>
