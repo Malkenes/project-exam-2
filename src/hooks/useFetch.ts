@@ -52,7 +52,7 @@ export const functiontesting = async () => {
 };
 
 export const useFetchVenue = (url: string) => {
-  const [data, setData] = useState<Venue | null>(null);
+  const [data, setData] = useState<Venue | Venue[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState("");
 
@@ -93,7 +93,6 @@ export const useFetchBooking = (id: string) => {
   const [data, setData] = useState<BookingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState("");
-
   useEffect(() => {
     const fetchData = async () => {
       try {

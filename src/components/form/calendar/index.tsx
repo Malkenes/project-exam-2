@@ -79,3 +79,32 @@ export const BookingCalendar: React.FC<BookingCalendarProps> = ({
 function isSameDay(a: Date, b: Date): boolean {
   return differenceInCalendarDays(a, b) === 0;
 }
+
+interface SearchCalenderProps {
+  full: Date[];
+}
+export const SearchCalendar: React.FC<SearchCalenderProps> = ({ full }) => {
+  const tileDisabled: ({
+    date,
+    view,
+  }: {
+    date: Date;
+    view: string;
+  }) => boolean = ({ date, view }) => {
+    if (view === "month") {
+      return full.some((dDate) => isSameDay(dDate, date));
+    }
+    return false;
+  };
+  const isSmallScreen = useMediaQuery("(max-width: 768px)");
+
+  return (
+    <S.StyledCalendar
+      showDoubleView={!isSmallScreen}
+      minDate={new Date()}
+      tileDisabled={tileDisabled}
+      prev2Label={null}
+      next2Label={null}
+    />
+  );
+};

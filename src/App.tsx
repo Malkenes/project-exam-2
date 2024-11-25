@@ -14,6 +14,7 @@ function App() {
             <Route path="edit/:type/:id?" element={<pages.Edit />} />
             <Route path="profile/:id" element={<pages.Profile />} />
             <Route path="list_venue" element={<pages.ListVenue />} />
+            <Route path="search" element={<pages.Search />} />
           </Route>
         </Routes>
       </BrowserRouter>

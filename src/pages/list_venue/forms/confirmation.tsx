@@ -3,9 +3,9 @@ import {
   StyledButtonContainer,
   StyledLockedInputContainer,
 } from "../../../components/form/styles";
-import { BaseVenue, GeoLocation } from "../../../shared/types";
+import { BaseVenue } from "../../../shared/types";
 import { useForm } from "react-hook-form";
-
+import { getlocationDetails } from "../../../utils/helpers";
 interface Props {
   onSubmit: () => void;
   onBack?: () => void;
@@ -23,36 +23,12 @@ export const Confirmation: React.FC<Props> = ({
   const handleFormSubmit = () => {
     onSubmit();
   };
-  const getlocationDetails = (location?: GeoLocation) => {
-    let label = "Location";
-    let value = "unknown";
-    if (!location) {
-      return { label, value };
-    }
-    switch (true) {
-      case !!location.address:
-        label = "Address";
-        value = location.address;
-        break;
-      case !!location.city:
-        label = "City";
-        value = location.city;
-        break;
-      case !!location.country:
-        label = "Country";
-        value = location.country;
-        break;
-      default:
-        break;
-    }
-    return { label, value };
-  };
 
-  const { label, value } = getlocationDetails(defaultValues.location);
+  const value = getlocationDetails(defaultValues.location);
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <StyledLockedInputContainer>
-        <label htmlFor="location">{label}</label>
+        <label htmlFor="location">Location</label>
         <input disabled type="text" id="location" value={value} />
       </StyledLockedInputContainer>
       <StyledLockedInputContainer>

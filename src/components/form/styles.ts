@@ -25,7 +25,7 @@ export const StyledInputContainer = styled.div`
     box-sizing: border-box;
     font-weight: 800;
     border-radius: 4px;
-    border: solid 0.5px #6c757d;
+    border: solid 1px #6c757d7a;
     &:focus-visible {
       outline: auto 1px ${(props) => props.theme.colors.secondary};
     }
