@@ -1,4 +1,4 @@
-import { BaseVenue, VenueResponse } from "../../shared/types";
+import { BaseVenue, Venue, VenueResponse } from "../../shared/types";
 import { createOptions, handleResponse } from "../../utils/api";
 export const fetchData = async (url: string): Promise<VenueResponse> => {
   const { VITE_NOROFF_API_KEY, VITE_NOROFF_BASE } = import.meta.env;
@@ -39,6 +39,26 @@ export const getVenue = async (id: string): Promise<VenueResponse> => {
     options,
   );
   return handleResponse(response);
+};
+
+export const getAllVenues = async () => {
+  const options = createOptions("GET");
+  let allVenues: Venue[] = [];
+  let page = 1;
+  const limit = 100;
+  while (true) {
+    const response = await fetch(
+      `${import.meta.env.VITE_NOROFF_BASE}holidaze/venues?limit=${limit}&page=${page}`,
+      options,
+    );
+    const result = await response.json();
+    if (result.meta.isLastPage) {
+      break;
+    }
+    allVenues = [...allVenues, ...result.data];
+    page++;
+  }
+  return allVenues;
 };
 export const createVenue = async (
   accessToken: string,
