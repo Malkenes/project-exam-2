@@ -6,6 +6,10 @@ export const StyledProductCard = styled.article`
   h3 {
     margin-top: 4px;
     margin-bottom: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
   }
   p {
     margin: 0;

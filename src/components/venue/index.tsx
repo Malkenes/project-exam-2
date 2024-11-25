@@ -29,7 +29,7 @@ export const ProductCard: React.FC<Partial<Venue>> = ({
         </StyledProductLocation>
         <h3>{name}</h3>
         <MetaTag tags={meta} />
-        <div>
+        <div style={{ flex: "1", alignContent: "end" }}>
           <StyledProductPrice>{price} Bitcoin</StyledProductPrice>
           <p>Per Night</p>
         </div>

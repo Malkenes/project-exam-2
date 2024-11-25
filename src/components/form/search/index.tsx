@@ -11,7 +11,7 @@ import { FormFieldset } from "../formFieldset";
 import { useState } from "react";
 import { useSearchStore } from "../../../stores/useSearchStore";
 import { StyledButton } from "../../buttons/styles";
-
+import { useNavigate } from "react-router-dom";
 interface SearchData {
   query: string;
   dateFrom: string;
@@ -34,6 +34,7 @@ const SearchBar: React.FC<Props> = ({
 }) => {
   const { setSearchState, search } = useSearchStore();
   const { register, handleSubmit, setValue } = useForm<SearchData>();
+  const navigate = useNavigate();
 
   const handleFormSubmit = (data: SearchData) => {
     setSearchState({
@@ -42,6 +43,7 @@ const SearchBar: React.FC<Props> = ({
       dateTo: new Date(data.dateTo),
       guests: data.guests,
     });
+    navigate("/search");
   };
 
   setValue("dateFrom", calendar[0].toISOString().split("T")[0]);

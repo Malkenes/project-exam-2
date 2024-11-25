@@ -85,6 +85,9 @@ export interface BaseVenue {
   location?: GeoLocation;
 }
 export interface Venue {
+  _count: {
+    bookings: number;
+  };
   id: string;
   name: string;
   description: string;

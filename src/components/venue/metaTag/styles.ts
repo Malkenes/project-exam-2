@@ -4,7 +4,7 @@ export const StyledMetaList = styled.ul`
   padding: 0;
   margin: 8px 0;
   display: flex;
-  flex-wrap: wrap;
+  overflow: hidden;
   gap: 8px;
 
   li {
