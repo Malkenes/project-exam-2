@@ -18,7 +18,7 @@ export const Venue: React.FC = () => {
   if (isError) {
     return <div>error</div>;
   }
-  if (!data) {
+  if (!data || Array.isArray(data)) {
     return <div>no data</div>;
   }
   console.log(data);

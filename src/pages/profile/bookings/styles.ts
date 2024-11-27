@@ -1,5 +1,26 @@
 import styled from "styled-components";
-export const StyledProfilePage = styled.main``;
+
+export const StyledColumn = styled.ul`
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+`;
+
+export const StyledGrid = styled(StyledColumn)`
+  @media (min-width: 786px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    li {
+      width: calc(50% - 16px);
+    }
+  }
+  @media (min-width: 1025px) {
+    li {
+      width: calc(33% - 17px);
+    }
+  }
+`;
 
 export const StyledBooking = styled.div<{ $expired?: boolean }>`
   opacity: ${(props) => (props.$expired ? "0.5" : "1")};
@@ -33,54 +54,6 @@ export const StyledBooking = styled.div<{ $expired?: boolean }>`
   @media (min-width: 786px) {
     img {
       height: 200px;
-    }
-  }
-`;
-
-export const StyledVenue = styled.div`
-  background: white;
-  display: flex;
-  flex-direction: column;
-  filter: drop-shadow(0 0 8px rgba(76, 76, 195, 0.25));
-  max-height: 500px;
-  ul {
-    overflow-y: auto;
-  }
-  img {
-    height: 48px;
-    width: 100%;
-    object-fit: cover;
-  }
-
-  @media (min-width: 786px) {
-    flex-direction: row;
-    gap: 32px;
-    > * {
-      width: 50%;
-    }
-    img {
-      height: 300px;
-    }
-  }
-`;
-export const StyledColumn = styled.ul`
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 32px;
-`;
-
-export const StyledGrid = styled(StyledColumn)`
-  @media (min-width: 786px) {
-    flex-direction: row;
-    flex-wrap: wrap;
-    li {
-      width: calc(50% - 16px);
-    }
-  }
-  @media (min-width: 1025px) {
-    li {
-      width: calc(33% - 17px);
     }
   }
 `;

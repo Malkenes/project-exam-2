@@ -51,6 +51,31 @@ export const functiontesting = async () => {
   useProfileStore.setState({ venues: updatedVenues });
 };
 
+export const useFetchProfile = (accessToken: string, name: string) => {
+  const [data, setData] = useState<{}>();
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState("");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await apiGetProfile(accessToken, name);
+        setData(response.data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setIsError(error.message);
+        } else {
+          setIsError("Something went wrong");
+        }
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [accessToken, name]);
+
+  return { data, isLoading, isError };
+};
 export const useFetchVenue = (url: string) => {
   const [data, setData] = useState<Venue | Venue[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);

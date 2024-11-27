@@ -92,7 +92,7 @@ const SearchBar: React.FC<Props> = ({
           readOnly
           value={guests}
           {...register("guests")}
-          style={{ minWidth: "60px" }}
+          style={{ minWidth: "70px", maxWidth: "70px" }}
         />
         <label htmlFor="guests">Guests</label>
       </StyledInputContainer>
@@ -122,7 +122,7 @@ export const SearchBarContainer: React.FC = () => {
         setIsCalendarOpen={setIsCalendarOpen}
         setIsGuestsOpen={setIsGuestsOpen}
       />
-      <div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
         {isCalendarOpen && (
           <StyledCalendar
             onChange={(value) => {

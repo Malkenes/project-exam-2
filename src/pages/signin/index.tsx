@@ -7,10 +7,10 @@ export const SignIn: React.FC = () => {
   const userData = useUserStore((state) => state.userData);
   if (userData.accessToken) {
     return (
-      <div>
+      <main>
         <h1>You are already signed in</h1>
         <Link to={"/"}>return to home</Link>
-      </div>
+      </main>
     );
   }
   return (

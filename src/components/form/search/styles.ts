@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const StyledSearchContainer = styled.div`
   padding: 16px;
+  max-width: 800px;
   background: white;
   border-radius: 16px;
   margin: 16px;
@@ -11,6 +12,7 @@ export const StyledSearchContainer = styled.div`
   align-items: center;
   @media (min-width: 786px) {
     padding: 48px;
+    margin: 16px auto;
   }
 `;
 

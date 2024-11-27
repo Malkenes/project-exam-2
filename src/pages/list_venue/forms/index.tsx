@@ -12,12 +12,12 @@ import { Amenities } from "./amenities";
 import { Confirmation } from "./confirmation";
 import { useRegister } from "../../register/useRegister";
 import { Loader } from "../../../components/loaders";
+import { Link } from "react-router-dom";
 
 export const MultiSteps: React.FC = () => {
   const { createVenue, isError, isLoading, isSuccessful } = useRegister();
 
   const { step, venue, setNext, setPrev, setVenueState } = useFormStore();
-  console.log(venue);
   const totalSteps: number = 6;
   const renderSteps = () => {
     switch (step) {
@@ -99,8 +99,9 @@ export const MultiSteps: React.FC = () => {
   }
   if (isSuccessful) {
     return (
-      <div>
-        <h2>Succesfully Created a Venue</h2>
+      <div style={{ textAlign: "center" }}>
+        <h2>Successfully Created Venue</h2>
+        <Link to={"/"}>Home</Link>
       </div>
     );
   }

@@ -98,7 +98,7 @@ const NavLinks: React.FC = () => {
     <S.StyledNavLinks>
       {userData.venueManager ? (
         <li>
-          <Link to={"/profile/" + userData.name}>Manager Dashboard</Link>
+          <Link to={"/profile/"}>Manager Dashboard</Link>
         </li>
       ) : (
         <li>
@@ -107,7 +107,7 @@ const NavLinks: React.FC = () => {
       )}
       {userData.accessToken && (
         <li>
-          <Link to={"/profile/" + userData.name}>View Bookings</Link>
+          <Link to={"/profile/"}>View Bookings</Link>
         </li>
       )}
       {!userData.accessToken ? (

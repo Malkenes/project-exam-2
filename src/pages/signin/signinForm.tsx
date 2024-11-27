@@ -74,7 +74,7 @@ export const SignInForm: React.FC = () => {
         <input type="checkbox" id="keep" {...register("keepSignedIn")} />
         <label htmlFor="keep">Keep me signed in</label>
       </StyledCheckContainer>
-      <StyledFullButton variant="primary">Sign In</StyledFullButton>
+      <StyledFullButton $variant="primary">Sign In</StyledFullButton>
       <StyledFormError>{isError}</StyledFormError>
     </form>
   );

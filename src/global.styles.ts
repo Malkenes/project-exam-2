@@ -11,6 +11,22 @@ body {
     color: #2F2F33;
     margin: 0;
 }
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1;
+    position: relative;
+}
+
+hgroup {
+    margin: 0 1rem;
+}
+
 h2 {
     font-weight: 500;
 }
@@ -19,7 +35,6 @@ p {
 }
 ul {
     list-style: none;
-
     a {
         color: inherit;
         text-decoration: none;
@@ -27,6 +42,12 @@ ul {
         &:hover {
             color: #6C6CDF;
         }
+    }
+}
+
+@media(min-width: 786px) {
+    hgroup {
+        margin: 0 2rem;
     }
 }
 `;

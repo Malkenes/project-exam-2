@@ -20,7 +20,7 @@ export const StyledInputContainer = styled.div`
   textarea {
     font-size: 16px;
     padding: 1.8rem 1rem 0.5rem 1rem;
-    min-width: 300px;
+    min-width: 200px;
     width: 100%;
     box-sizing: border-box;
     font-weight: 800;

@@ -14,13 +14,11 @@ import { useMultiStepStore } from "../../stores/useMultiStepStore";
 import { BaseVenue, RegisterData, UpdateProfile } from "../../shared/types";
 import { updateProfile as apiUpdateProfile } from "../../api/profile";
 import { useUserStore } from "../../stores/useUserStore";
-import { useModalStore } from "../../stores/useModalStore";
 
 export const useRegister = () => {
   const accessToken = useUserStore((state) => state.userData.accessToken);
   const name = useUserStore((state) => state.userData.name);
   const setUserData = useUserStore((state) => state.setState);
-  const openModal = useModalStore((state) => state.openModal);
   const resetSteps = useMultiStepStore((state) => state.reset);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
@@ -70,7 +68,6 @@ export const useRegister = () => {
     setIsLoading(true);
     try {
       await apiBooking(accessToken, data);
-      openModal();
     } catch (error) {
       if (error instanceof Error) {
         setIsError(error.message);

@@ -7,6 +7,10 @@ import {
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import {
+  StyledInformation,
+  StyledInformationExtended,
+} from "./information.styles";
 
 const schema = yup
   .object({
@@ -44,8 +48,8 @@ export const Information: React.FC<Props> = ({
   return (
     <form onSubmit={handleSubmit(handleFormSubmit)}>
       <h2>Basic Information</h2>
-      <div style={{ display: "flex" }}>
-        <div style={{ width: "50%" }}>
+      <StyledInformation>
+        <div>
           <p>
             Give your venue a standout name and provide a description that
             captures its unique appeal, setting the right expectations for
@@ -83,7 +87,7 @@ export const Information: React.FC<Props> = ({
             </StyledButton>
           </StyledButtonContainer>
         </div>
-        <div style={{ width: "50%" }}>
+        <StyledInformationExtended>
           <div>
             <h3>Venue Name</h3>
             <p>
@@ -106,8 +110,8 @@ export const Information: React.FC<Props> = ({
               expect during their stay.
             </p>
           </div>
-        </div>
-      </div>
+        </StyledInformationExtended>
+      </StyledInformation>
     </form>
   );
 };

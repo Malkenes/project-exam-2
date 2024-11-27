@@ -18,6 +18,10 @@ export const StyledSignIn = styled.main`
 
 export const StyledFormWrapper = styled.div`
   min-height: 400px;
+  margin: 0 1rem;
+  h2 {
+    text-align: center;
+  }
 `;
 
 export const StyledHelpWrapper = styled.div`
