@@ -14,11 +14,13 @@ import { useMultiStepStore } from "../../stores/useMultiStepStore";
 import { BaseVenue, RegisterData, UpdateProfile } from "../../shared/types";
 import { updateProfile as apiUpdateProfile } from "../../api/profile";
 import { useUserStore } from "../../stores/useUserStore";
+import { useHolidazeStore } from "../../stores";
 
 export const useRegister = () => {
   const accessToken = useUserStore((state) => state.userData.accessToken);
   const name = useUserStore((state) => state.userData.name);
   const setUserData = useUserStore((state) => state.setState);
+  const setUserX = useHolidazeStore((state) => state.setUserState);
   const resetSteps = useMultiStepStore((state) => state.reset);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
@@ -46,6 +48,7 @@ export const useRegister = () => {
     try {
       const result = await apiUpdateProfile(accessToken, name, data);
       setUserData(result.data);
+      setUserX(result.data);
       setIsSuccessful(true);
       resetSteps();
     } catch (error) {
