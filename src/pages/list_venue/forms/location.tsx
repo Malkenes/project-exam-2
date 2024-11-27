@@ -5,7 +5,7 @@ import {
   StyledInputContainer,
 } from "../../../components/form/styles";
 
-import "Leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 
 import { useVenueStore } from "../../../stores/useVenueStore";
