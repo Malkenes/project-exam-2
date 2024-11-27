@@ -1,5 +1,4 @@
 import { Loader } from "../../../components/loaders";
-import { useFetchSingleVenue } from "../../../hooks/useFetch";
 import { useRegister } from "../../register/useRegister";
 import { useFormStore } from "../../../stores/useMultiStepStore";
 import { Venue } from "../../../shared/types";
@@ -16,14 +15,13 @@ import { Media } from "../../list_venue/forms/media";
 import { Pricing } from "../../list_venue/forms/pricing";
 import { StyledFormWrapper } from "../../signin/styles";
 import { Link } from "react-router-dom";
+import { useApi } from "../../../hooks/useApi";
 
-export const EditVenue: React.FC<{ id: string | undefined }> = ({
-  id = "",
-}) => {
-  const { data, isLoading, isError } = useFetchSingleVenue(id);
+export const EditVenue: React.FC<{ id: string | undefined }> = ({ id }) => {
+  const { data, isLoading, error } = useApi<Venue>(`holidaze/venues/${id}`);
 
   if (isLoading) {
-    return <div>...loading</div>;
+    return <Loader />;
   }
   if (!data) {
     return <div>ka</div>;
@@ -32,7 +30,7 @@ export const EditVenue: React.FC<{ id: string | undefined }> = ({
   return (
     <div>
       <FormContainer data={data} />
-      <p>{isError}</p>
+      <p>{error}</p>
     </div>
   );
 };

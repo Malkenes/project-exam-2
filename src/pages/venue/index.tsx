@@ -1,21 +1,21 @@
 import { useParams } from "react-router-dom";
-import { useFetchVenue } from "../../hooks/useFetch";
-import { Media } from "../../shared/types";
+import { Media, Venue as TypeVenue } from "../../shared/types";
 import { FaStar } from "react-icons/fa";
 import * as S from "./styles";
 import { useState } from "react";
 import { FormContainer } from "./form";
 import { SuccessModal } from "../../components/modals/successModal";
+import { useApi } from "../../hooks/useApi";
 
 export const Venue: React.FC = () => {
   const { id } = useParams();
-  const { data, isLoading, isError } = useFetchVenue(
+  const { data, isLoading, error } = useApi<TypeVenue>(
     `holidaze/venues/${id}?_bookings=true`,
   );
   if (isLoading) {
     return <div>loading</div>;
   }
-  if (isError) {
+  if (error) {
     return <div>error</div>;
   }
   if (!data || Array.isArray(data)) {

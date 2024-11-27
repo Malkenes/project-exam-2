@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { useFetchVenue } from "../../../hooks/useFetch";
 import { Venue } from "../../../shared/types";
 import { ProductCard } from "..";
 import {
@@ -9,15 +8,16 @@ import {
 } from "./styles";
 import React, { useEffect, useState } from "react";
 import { getAllVenues } from "../../../api/venues";
+import { useApi } from "../../../hooks/useApi";
 
 interface Props {
   url: string;
 }
 
 export const VenueList: React.FC<Props> = ({ url }) => {
-  const { data, isLoading, isError } = useFetchVenue(url + "&limit=6");
+  const { data, isLoading, error } = useApi<Venue[]>(url + "&limit=6");
   if (isLoading) return <div>loading...</div>;
-  if (isError) return <div>Error: {isError}</div>;
+  if (error) return <div>Error: {error}</div>;
   if (!Array.isArray(data)) return <div>no</div>;
   return (
     <StyledVenueList>
