@@ -1,6 +1,6 @@
 import { Loader } from "../../../components/loaders";
 import { useRegister } from "../../register/useRegister";
-import { useFormStore } from "../../../stores/useMultiStepStore";
+import { useHolidazeStore } from "../../../stores";
 import { Venue } from "../../../shared/types";
 import { useEffect } from "react";
 import {
@@ -40,7 +40,7 @@ interface Props {
 }
 const FormContainer: React.FC<Props> = ({ data }) => {
   const { updateVenue, isError, isLoading, isSuccessful } = useRegister();
-  const { step, venue, setNext, setPrev, setVenueState } = useFormStore();
+  const { step, venue, setNext, setPrev, setVenueState } = useHolidazeStore();
 
   useEffect(() => {
     setVenueState({

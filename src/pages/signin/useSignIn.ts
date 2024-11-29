@@ -1,12 +1,10 @@
 import { signIn as apiSignIn } from "../../api/auth/index";
 import { useState } from "react";
-import { useUserStore } from "../../stores/useUserStore";
 import { useHolidazeStore } from "../../stores";
 
 export const useSignIn = () => {
-  const setUserData = useUserStore((state) => state.setState);
-  const setUserX = useHolidazeStore((state) => state.setUserState);
-
+  const setUserData = useHolidazeStore((state) => state.setUserState);
+  const [isSuccessful, setIsSuccessful] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
   const signIn = async ({
@@ -23,8 +21,7 @@ export const useSignIn = () => {
       const response = await apiSignIn(email, password);
       setUserData(response.data);
       setUserData({ keepSignedIn });
-      setUserX(response.data);
-      setUserX({ keepSignedIn });
+      setIsSuccessful(true);
     } catch (error) {
       if (error instanceof Error) {
         setIsError(error.message);
@@ -35,5 +32,5 @@ export const useSignIn = () => {
       setIsLoading(false);
     }
   };
-  return { signIn, isError, isLoading };
+  return { signIn, isError, isLoading, isSuccessful };
 };

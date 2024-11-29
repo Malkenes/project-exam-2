@@ -1,4 +1,4 @@
-import { useModalStore } from "../../stores/useModalStore";
+import { useHolidazeStore } from "../../stores";
 import { StyledModalWrapper, StyledModal } from "./styles";
 import { StyledButton } from "../buttons/styles";
 import { useRegister } from "../../pages/register/useRegister";
@@ -10,7 +10,7 @@ interface Props {
   id: string;
 }
 export const DeleteModal: React.FC<Props> = ({ title, id, type }) => {
-  const { isModalOpen, closeModal } = useModalStore();
+  const { isModalOpen, closeModal } = useHolidazeStore();
 
   if (!isModalOpen) {
     return null;

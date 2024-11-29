@@ -1,18 +1,12 @@
 import styled from "styled-components";
-export const StyledVenuePage = styled.main`
-  hgroup {
-    text-align: center;
-    margin-bottom: 48px;
-    background: white;
-    padding: 24px;
-    filter: drop-shadow(0 0 8px rgba(76, 76, 195, 0.25));
-    p {
-      max-width: 342px;
-      margin: auto;
-    }
-  }
+export const StyledVenuePage = styled.main``;
+export const StyledVenueTitle = styled.div`
+  text-align: center;
+  margin-bottom: 48px;
+  background: white;
+  padding: 24px;
+  filter: drop-shadow(0 0 8px rgba(76, 76, 195, 0.25));
 `;
-
 export const StyledMediaGallery = styled.div`
   height: 400px;
   width: 100%;

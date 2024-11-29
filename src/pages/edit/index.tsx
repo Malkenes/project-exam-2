@@ -1,18 +1,17 @@
 import { useParams } from "react-router-dom";
-import { useFormStore } from "./../../stores/useMultiStepStore";
 import { DeleteModal } from "../../components/modals/deleteModal";
-import { useModalStore } from "../../stores/useModalStore";
+import { useHolidazeStore } from "../../stores";
 import { EditProfile } from "./profile";
 import { useEffect } from "react";
 import { EditBooking } from "./booking";
 import { EditVenue } from "./venue";
+import { Unauthorized } from "../../components/unauthorized";
 
 export const Edit: React.FC = () => {
-  const { openModal } = useModalStore();
-  const reset = useFormStore((state) => state.resetSteps);
+  const { openModal, resetSteps, userData } = useHolidazeStore();
   useEffect(() => {
-    reset();
-  }, [reset]);
+    resetSteps();
+  }, [resetSteps]);
 
   const { type, id } = useParams();
   const renderEditType = () => {
@@ -27,6 +26,11 @@ export const Edit: React.FC = () => {
         break;
     }
   };
+
+  if (!userData.accessToken) {
+    return <Unauthorized />;
+  }
+
   if (!type) {
     return <div></div>;
   }
@@ -34,7 +38,9 @@ export const Edit: React.FC = () => {
     return (
       <main>
         <DeleteModal title="Want to say Goodbye?" id={id} type={type} />
-        <h1>Edit {type}</h1>
+        <hgroup>
+          <h1>Edit {type}</h1>
+        </hgroup>
         <div>{renderEditType()}</div>
         <button onClick={openModal}>I want to remove my {type}</button>
       </main>
@@ -42,8 +48,10 @@ export const Edit: React.FC = () => {
   }
   return (
     <main>
-      <h1>Edit {type}</h1>
-      <div>{renderEditType()}</div>
+      <hgroup>
+        <h1>Edit {type}</h1>
+      </hgroup>
+      {renderEditType()}
     </main>
   );
 };

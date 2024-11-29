@@ -1,6 +1,6 @@
 import { LatLngLiteral } from "leaflet";
 import { create, StateCreator } from "zustand";
-import { BaseVenue, Media, Meta, Venue } from "../shared/types";
+import { Media } from "../shared/types";
 type State = {
   name: string;
   description: string;
@@ -79,74 +79,30 @@ export const useVenueStore = create<State & Actions>()((set) => ({
     }),
 }));
 
-interface VenueSlice {
-  venue: BaseVenue;
-  setVenueState: (fields: Partial<Venue>) => void;
-  setMetaState: (fields: Meta) => void;
-  setMediaState: (fields: Media) => void;
-}
-
-const initialState: BaseVenue = {
-  name: "",
-  description: "",
-  media: [],
-  price: 20,
-  maxGuests: 1,
-  rating: 3,
-  meta: {
-    wifi: false,
-    parking: false,
-    breakfast: false,
-    pets: false,
-  },
-  location: {},
-};
-const createVenueSlice: StateCreator<VenueSlice, [], [], VenueSlice> = (
-  set,
-) => ({
-  venue: initialState,
-  setVenueState: (fields) =>
-    set((state) => ({ venue: { ...state.venue, ...fields } })),
-  setMetaState: (fields) =>
-    set((state) => ({
-      venue: {
-        ...state.venue,
-        meta: { ...state.venue.meta, ...fields },
-      },
-    })),
-  setMediaState: (fields) =>
-    set((state) => ({
-      venue: {
-        ...state.venue,
-        media: state.venue.media ? [...state.venue.media, fields] : [fields],
-      },
-    })),
-});
-
-interface BookingSlice {
+export interface BookingSlice {
   booking: {
     venueId: string;
-    dateFrom: string;
-    dateTo: string;
+    name: string;
+    dateFrom: Date;
+    dateTo: Date;
     guests: number;
   };
-  setGuests: (amount: number) => void;
+  setBookingState: (fields: Partial<BookingSlice["booking"]>) => void;
 }
 
-const createBookingSlice: StateCreator<BookingSlice, [], [], BookingSlice> = (
-  set,
-) => ({
+export const createBookingSlice: StateCreator<
+  BookingSlice,
+  [],
+  [],
+  BookingSlice
+> = (set) => ({
   booking: {
     venueId: "",
-    dateFrom: "",
-    dateTo: "",
-    guests: 0,
+    name: "",
+    dateFrom: new Date(),
+    dateTo: new Date(),
+    guests: 1,
   },
-  setGuests: (amount) =>
-    set((state) => ({ booking: { ...state.booking, guests: amount } })),
+  setBookingState: (fields) =>
+    set((state) => ({ booking: { ...state.booking, ...fields } })),
 });
-
-export const useBoundStore = create<VenueSlice & BookingSlice>()((...a) => ({
-  ...createVenueSlice(...a),
-  ...createBookingSlice(...a),
-}));

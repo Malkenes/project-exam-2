@@ -10,18 +10,16 @@ import {
   deleteVenue as apiDeleteVenue,
 } from "../../api/venues";
 import { useState } from "react";
-import { useMultiStepStore } from "../../stores/useMultiStepStore";
 import { BaseVenue, RegisterData, UpdateProfile } from "../../shared/types";
 import { updateProfile as apiUpdateProfile } from "../../api/profile";
-import { useUserStore } from "../../stores/useUserStore";
 import { useHolidazeStore } from "../../stores";
 
 export const useRegister = () => {
-  const accessToken = useUserStore((state) => state.userData.accessToken);
-  const name = useUserStore((state) => state.userData.name);
-  const setUserData = useUserStore((state) => state.setState);
+  const accessToken = useHolidazeStore((state) => state.userData.accessToken);
+  const name = useHolidazeStore((state) => state.userData.name);
+  const setUserData = useHolidazeStore((state) => state.setUserState);
   const setUserX = useHolidazeStore((state) => state.setUserState);
-  const resetSteps = useMultiStepStore((state) => state.reset);
+  const resetSteps = useHolidazeStore((state) => state.resetSteps);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState("");
   const [isDeleted, setIsDeleted] = useState(false);
@@ -71,6 +69,7 @@ export const useRegister = () => {
     setIsLoading(true);
     try {
       await apiBooking(accessToken, data);
+      setIsSuccessful(true);
     } catch (error) {
       if (error instanceof Error) {
         setIsError(error.message);

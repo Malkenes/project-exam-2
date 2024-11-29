@@ -33,7 +33,7 @@ export const useApi = <T>(
       }
     };
     fetchData();
-  }, [endpoint]);
+  }, [endpoint, accessToken]);
 
   return { data, error, isLoading };
 };

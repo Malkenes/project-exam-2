@@ -4,30 +4,28 @@ import {
   StyledProgressContainer,
   StyledProgressBar,
 } from "../../../components/form/styles";
-import { useUserStore } from "../../../stores/useUserStore";
 import { Avatar } from "../../register/forms/avatar";
 import { Banner } from "../../register/forms/banner";
 import { VenueManager } from "../../register/forms/venueManager";
 import { StyledFormWrapper } from "../../register/styles";
-import { useFormStore } from "../../../stores/useMultiStepStore";
+import { useHolidazeStore } from "../../../stores";
 import { useRegister } from "../../register/useRegister";
-import { Link } from "react-router-dom";
 import { Loader } from "../../../components/loaders";
+import { SuccessMessage } from "../../../components/form/success";
 
 export const EditProfile: React.FC = () => {
   const { updateProfile, isError, isLoading, isSuccessful } = useRegister();
-  const { step, updateUser, setNext, setPrev, setUpdateUserState } =
-    useFormStore();
-  const user = useUserStore((state) => state.userData);
+  const { userData, step, updateUser, setNext, setPrev, setUpdateUserState } =
+    useHolidazeStore();
 
   useEffect(() => {
     setUpdateUserState({
-      bio: user.bio,
-      avatar: user.avatar,
-      banner: user.banner,
-      venueManager: user.venueManager,
+      bio: userData.bio,
+      avatar: userData.avatar,
+      banner: userData.banner,
+      venueManager: userData.venueManager,
     });
-  }, [user, setUpdateUserState]);
+  }, [userData, setUpdateUserState]);
 
   const totalSteps: number = 4;
   const renderSteps = () => {
@@ -41,8 +39,8 @@ export const EditProfile: React.FC = () => {
             }}
             defaultValues={{
               bio: updateUser.bio,
-              name: user.name,
-              email: user.email,
+              name: userData.name,
+              email: userData.email,
             }}
           />
         );
@@ -89,19 +87,22 @@ export const EditProfile: React.FC = () => {
   }
   if (isSuccessful) {
     return (
-      <div>
-        <h2>Succesfully updated your profile</h2>
-        <Link to={"/"}>Go to Homepage</Link>
-      </div>
+      <SuccessMessage
+        title="Succesfully updated your profile"
+        message="View Profile"
+        link="/profile"
+      />
     );
   }
   return (
-    <StyledFormWrapper>
+    <>
       <StyledProgressContainer>
         <StyledProgressBar $percent={step / totalSteps} />
       </StyledProgressContainer>
-      {renderSteps()}
-      <p>{isError}</p>
-    </StyledFormWrapper>
+      <StyledFormWrapper>
+        {renderSteps()}
+        <p>{isError}</p>
+      </StyledFormWrapper>
+    </>
   );
 };

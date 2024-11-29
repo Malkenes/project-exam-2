@@ -1,6 +1,6 @@
-import { create, StateCreator } from "zustand";
+import { StateCreator } from "zustand";
 
-interface SearchSlice {
+export interface SearchSlice {
   search: {
     query: string;
     guests: number;
@@ -10,9 +10,12 @@ interface SearchSlice {
   setSearchState: (fields: Partial<SearchSlice["search"]>) => void;
 }
 
-const createSearchSlice: StateCreator<SearchSlice, [], [], SearchSlice> = (
-  set,
-) => ({
+export const createSearchSlice: StateCreator<
+  SearchSlice,
+  [],
+  [],
+  SearchSlice
+> = (set) => ({
   search: {
     query: "",
     guests: 1,
@@ -22,7 +25,3 @@ const createSearchSlice: StateCreator<SearchSlice, [], [], SearchSlice> = (
   setSearchState: (fields) =>
     set((state) => ({ search: { ...state.search, ...fields } })),
 });
-
-export const useSearchStore = create<SearchSlice>()((...a) => ({
-  ...createSearchSlice(...a),
-}));

@@ -24,7 +24,17 @@ main {
 }
 
 hgroup {
-    margin: 0 1rem;
+    margin: 1rem;
+    display: inline-block;
+    h1 {
+        margin: 0 0 0.5rem;
+    }
+    p {
+        min-width: 100%;
+        color: #6C757D;
+        width: 200px;
+        margin: 0;
+    }
 }
 
 h2 {
@@ -47,7 +57,7 @@ ul {
 
 @media(min-width: 786px) {
     hgroup {
-        margin: 0 2rem;
+        margin: 1rem 2rem;
     }
 }
 `;

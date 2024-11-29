@@ -74,10 +74,7 @@ export const StyledCalendar = styled(Calendar)`
 
 export const StyledTravelRange = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 48px;
-  > div {
-    max-width: 350px;
+  input {
+    min-width: 100px;
   }
 `;

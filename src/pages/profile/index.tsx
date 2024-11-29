@@ -1,13 +1,13 @@
 import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
 import * as S from "./styles";
 import { Booking, Media, Venue } from "../../shared/types";
 import { Loader } from "../../components/loaders";
-import { useUserStore } from "../../stores/useUserStore";
+import { useHolidazeStore } from "../../stores";
 import { useApi } from "../../hooks/useApi";
 import { ProfileHero } from "./hero";
 import { ProfileBookings } from "./bookings";
 import { ProfileVenues } from "./venues";
+import { Unauthorized } from "../../components/unauthorized";
 
 interface User {
   name: string;
@@ -26,6 +26,12 @@ interface User {
 
 export const Profile: React.FC = () => {
   const { id } = useParams();
+  const { userData } = useHolidazeStore();
+
+  if (!userData.accessToken) {
+    return <Unauthorized />;
+  }
+
   return (
     <S.StyledProfilePage>
       <ProfileType id={id} />
@@ -34,7 +40,7 @@ export const Profile: React.FC = () => {
 };
 
 const ProfileType: React.FC<{ id: string | undefined }> = ({ id }) => {
-  const { userData } = useUserStore();
+  const { userData } = useHolidazeStore();
 
   const profileName = id
     ? `holidaze/profiles/${id}?_venues=true`
@@ -43,13 +49,6 @@ const ProfileType: React.FC<{ id: string | undefined }> = ({ id }) => {
     profileName,
     userData.accessToken,
   );
-  if (!userData.accessToken) {
-    return (
-      <div>
-        You need to <Link to={"/signin"}>sign in</Link> to view this page
-      </div>
-    );
-  }
   if (isLoading) {
     return <Loader />;
   }

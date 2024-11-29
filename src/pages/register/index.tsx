@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { useFormStore } from "../../stores/useMultiStepStore";
+import { useHolidazeStore } from "../../stores";
 import { MultiSteps } from "./forms/index";
-import { StyledRegister } from "./styles";
+import { StyledMultiStepWrapper, StyledRegister } from "./styles";
 
 export const Register: React.FC = () => {
-  const reset = useFormStore((state) => state.resetSteps);
+  const reset = useHolidazeStore((state) => state.resetSteps);
   useEffect(() => {
     reset();
   }, [reset]);
@@ -15,9 +15,9 @@ export const Register: React.FC = () => {
         <h1>Register</h1>
         <p>Your journey starts here Register to find your perfect retreat</p>
       </hgroup>
-      <div>
+      <StyledMultiStepWrapper>
         <MultiSteps />
-      </div>
+      </StyledMultiStepWrapper>
     </StyledRegister>
   );
 };

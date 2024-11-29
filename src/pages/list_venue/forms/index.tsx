@@ -2,7 +2,7 @@ import {
   StyledProgressContainer,
   StyledProgressBar,
 } from "../../../components/form/styles";
-import { useFormStore } from "../../../stores/useMultiStepStore";
+import { useHolidazeStore } from "../../../stores";
 import { StyledFormWrapper } from "../../signin/styles";
 import { Location } from "./location";
 import { Information } from "./information";
@@ -17,7 +17,7 @@ import { Link } from "react-router-dom";
 export const MultiSteps: React.FC = () => {
   const { createVenue, isError, isLoading, isSuccessful } = useRegister();
 
-  const { step, venue, setNext, setPrev, setVenueState } = useFormStore();
+  const { step, venue, setNext, setPrev, setVenueState } = useHolidazeStore();
   const totalSteps: number = 6;
   const renderSteps = () => {
     switch (step) {

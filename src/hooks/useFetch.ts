@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchData as ApiFetchData } from "../api/venues";
-import { useUserStore } from "../stores/useUserStore";
+import { useHolidazeStore } from "../stores";
 import { bookingInVenue } from "../shared/types";
 import { getBooking } from "../api/booking";
 
@@ -14,7 +14,7 @@ interface BookingData {
 }
 
 export const useFetchBooking = (id: string) => {
-  const accessToken = useUserStore((state) => state.userData.accessToken);
+  const accessToken = useHolidazeStore((state) => state.userData.accessToken);
   const [data, setData] = useState<BookingData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState("");
@@ -50,7 +50,7 @@ export const useFetchBooking = (id: string) => {
     if (id) {
       fetchData();
     }
-  }, [id]);
+  }, [id, accessToken]);
 
   return { data, isLoading, isError };
 };

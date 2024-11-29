@@ -1,13 +1,15 @@
-import { create } from "zustand";
+import { StateCreator } from "zustand";
 
-type ModalStore = {
+export interface ModalSlice {
   isModalOpen: boolean;
   openModal: () => void;
   closeModal: () => void;
-};
+}
 
-export const useModalStore = create<ModalStore>()((set) => ({
+export const createModalSlice: StateCreator<ModalSlice, [], [], ModalSlice> = (
+  set,
+) => ({
   isModalOpen: false,
   openModal: () => set({ isModalOpen: true }),
   closeModal: () => set({ isModalOpen: false }),
-}));
+});

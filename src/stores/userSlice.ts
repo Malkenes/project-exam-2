@@ -14,6 +14,7 @@ export interface UserSlice {
     accessToken: string;
   };
   setUserState: (fields: Partial<UserSlice["userData"]>) => void;
+  resetUser: () => void;
 }
 
 const initialUserData: UserSlice["userData"] = {
@@ -32,7 +33,8 @@ const initialUserData: UserSlice["userData"] = {
   venueManager: false,
   keepSignedIn: false,
 };
-export const createUserSlice: StateCreator<
+
+const createUserSlice: StateCreator<
   UserSlice,
   [["zustand/persist", unknown]],
   [],
@@ -41,16 +43,19 @@ export const createUserSlice: StateCreator<
   userData: initialUserData,
   setUserState: (fields) =>
     set((state) => ({ userData: { ...state.userData, ...fields } })),
+  resetUser: () => {
+    set({ userData: initialUserData });
+  },
 });
 
 const persistOptions: PersistOptions<UserSlice, unknown> = {
-  name: "userX",
+  name: "user",
   partialize: (state) => {
     return state.userData.keepSignedIn ? { userData: state.userData } : {};
   },
   onRehydrateStorage: () => (state) => {
     if (state && !state.userData.keepSignedIn) {
-      localStorage.removeItem("userX");
+      localStorage.removeItem("user");
     }
   },
 };
