@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useFetchVenue } from "../../../hooks/useFetch";
 import { Venue } from "../../../shared/types";
 import { ProductCard } from "..";
 import {
@@ -12,6 +13,7 @@ import { useApi } from "../../../hooks/useApi";
 import { Loader } from "../../loaders";
 import { StyledErrorContainer } from "../../form/styles";
 
+
 interface Props {
   url: string;
 }
@@ -21,6 +23,7 @@ export const VenueList: React.FC<Props> = ({ url }) => {
   if (isLoading) return <Loader />;
   if (error) return <StyledErrorContainer>{error}</StyledErrorContainer>;
   if (!Array.isArray(data)) return <div>No Venues</div>;
+
   return (
     <StyledVenueList>
       {data?.map((venue: Venue) => (
@@ -40,6 +43,7 @@ export const VenueList: React.FC<Props> = ({ url }) => {
     </StyledVenueList>
   );
 };
+
 
 export const VenueListPopular: React.FC = () => {
   const { data, isLoading, isError } = useFetchVenues();

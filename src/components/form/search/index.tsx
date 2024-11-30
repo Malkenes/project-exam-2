@@ -14,7 +14,6 @@ import { FormFieldset } from "../formFieldset";
 import { useState } from "react";
 import { useHolidazeStore } from "../../../stores";
 import { useNavigate } from "react-router-dom";
-
 interface SearchData {
   query: string;
   dateFrom: string;
@@ -107,7 +106,6 @@ const SearchBar: React.FC<Props> = ({
 
 export const SearchBarContainer: React.FC = () => {
   const { search } = useHolidazeStore();
-
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isGuestsOpen, setIsGuestsOpen] = useState(false);
   const [guestValue, setGuestValue] = useState(search.guests);
@@ -125,6 +123,7 @@ export const SearchBarContainer: React.FC = () => {
         setIsGuestsOpen={setIsGuestsOpen}
       />
       <div style={{ display: "flex", justifyContent: "center" }}>
+
         {isCalendarOpen && (
           <StyledCalendar
             onChange={(value) => {

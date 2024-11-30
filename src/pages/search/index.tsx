@@ -8,6 +8,7 @@ import { Venue } from "../../shared/types";
 import { useApi } from "../../hooks/useApi";
 import { Loader } from "../../components/loaders";
 
+
 export const Search: React.FC = () => {
   return (
     <main>

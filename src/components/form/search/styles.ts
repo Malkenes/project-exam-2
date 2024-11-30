@@ -69,3 +69,4 @@ export const StyledGuestInput = styled(StyledInputContainer)`
 export const StyledSearchButton = styled(StyledFullButton)`
   grid-area: button;
 `;
+
