@@ -1,9 +1,9 @@
-import { useUserStore } from "../../stores/useUserStore";
+import { useHolidazeStore } from "../../stores";
 import { StyledButton } from "./styles";
 import { useNavigate } from "react-router-dom";
 
 export const SignOutButton: React.FC = () => {
-  const reset = useUserStore((state) => state.reset);
+  const reset = useHolidazeStore((state) => state.resetUser);
   const navigate = useNavigate();
 
   return (

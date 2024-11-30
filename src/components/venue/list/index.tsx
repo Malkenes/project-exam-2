@@ -9,16 +9,21 @@ import {
 } from "./styles";
 import React, { useEffect, useState } from "react";
 import { getAllVenues } from "../../../api/venues";
+import { useApi } from "../../../hooks/useApi";
+import { Loader } from "../../loaders";
+import { StyledErrorContainer } from "../../form/styles";
+
 
 interface Props {
   url: string;
 }
 
 export const VenueList: React.FC<Props> = ({ url }) => {
-  const { data, isLoading, isError } = useFetchVenue(url + "&limit=6");
-  if (isLoading) return <div>loading...</div>;
-  if (isError) return <div>Error: {isError}</div>;
-  if (!Array.isArray(data)) return <div>no</div>;
+  const { data, isLoading, error } = useApi<Venue[]>(url + "&limit=6");
+  if (isLoading) return <Loader />;
+  if (error) return <StyledErrorContainer>{error}</StyledErrorContainer>;
+  if (!Array.isArray(data)) return <div>No Venues</div>;
+
   return (
     <StyledVenueList>
       {data?.map((venue: Venue) => (
@@ -39,15 +44,18 @@ export const VenueList: React.FC<Props> = ({ url }) => {
   );
 };
 
-export const VenueListTest: React.FC = () => {
-  const { data } = useFetchVenues();
+
+export const VenueListPopular: React.FC = () => {
+  const { data, isLoading, isError } = useFetchVenues();
   if (Array.isArray(data)) {
     data.sort((a, b) => (b._count.bookings || 0) - (a._count.bookings || 0));
   }
-  if (!Array.isArray(data)) return <div>no</div>;
+  if (!Array.isArray(data)) return <div>No Venues</div>;
+  if (isLoading) return <Loader />;
+  if (isError) return <StyledErrorContainer>{isError}</StyledErrorContainer>;
   return (
     <StyledVenueList>
-      {data?.map((venue: Venue) => (
+      {data?.slice(0, 6).map((venue: Venue) => (
         <li key={venue.id}>
           <Link to={"/venue/" + venue.id}>
             <ProductCard
@@ -72,7 +80,10 @@ interface ContinentProps {
   };
 }
 export const VenueListContinent: React.FC<ContinentProps> = ({ continent }) => {
-  const { data } = useFetchVenues();
+  const { data, isLoading, isError } = useFetchVenues();
+  if (!Array.isArray(data)) return <div>No Venues</div>;
+  if (isLoading) return <Loader />;
+  if (isError) return <StyledErrorContainer>{isError}</StyledErrorContainer>;
   return (
     <div>
       <StyledContinentImage $img={continent.image}></StyledContinentImage>

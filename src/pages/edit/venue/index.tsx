@@ -1,7 +1,6 @@
 import { Loader } from "../../../components/loaders";
-import { useFetchSingleVenue } from "../../../hooks/useFetch";
 import { useRegister } from "../../register/useRegister";
-import { useFormStore } from "../../../stores/useMultiStepStore";
+import { useHolidazeStore } from "../../../stores";
 import { Venue } from "../../../shared/types";
 import { useEffect } from "react";
 import {
@@ -14,16 +13,15 @@ import { Confirmation } from "../../list_venue/forms/confirmation";
 import { Information } from "../../list_venue/forms/information";
 import { Media } from "../../list_venue/forms/media";
 import { Pricing } from "../../list_venue/forms/pricing";
-import { StyledFormWrapper } from "../../signin/styles";
 import { Link } from "react-router-dom";
+import { useApi } from "../../../hooks/useApi";
+import { StyledVenueFormWrapper } from "../../list_venue/forms/styles";
 
-export const EditVenue: React.FC<{ id: string | undefined }> = ({
-  id = "",
-}) => {
-  const { data, isLoading, isError } = useFetchSingleVenue(id);
+export const EditVenue: React.FC<{ id: string | undefined }> = ({ id }) => {
+  const { data, isLoading, error } = useApi<Venue>(`holidaze/venues/${id}`);
 
   if (isLoading) {
-    return <div>...loading</div>;
+    return <Loader />;
   }
   if (!data) {
     return <div>ka</div>;
@@ -32,7 +30,7 @@ export const EditVenue: React.FC<{ id: string | undefined }> = ({
   return (
     <div>
       <FormContainer data={data} />
-      <p>{isError}</p>
+      <p>{error}</p>
     </div>
   );
 };
@@ -42,7 +40,7 @@ interface Props {
 }
 const FormContainer: React.FC<Props> = ({ data }) => {
   const { updateVenue, isError, isLoading, isSuccessful } = useRegister();
-  const { step, venue, setNext, setPrev, setVenueState } = useFormStore();
+  const { step, venue, setNext, setPrev, setVenueState } = useHolidazeStore();
 
   useEffect(() => {
     setVenueState({
@@ -145,12 +143,14 @@ const FormContainer: React.FC<Props> = ({ data }) => {
     );
   }
   return (
-    <StyledFormWrapper>
+    <>
       <StyledProgressContainer>
         <StyledProgressBar $percent={step / totalSteps} />
       </StyledProgressContainer>
-      {renderSteps()}
-      <p>{isError}</p>
-    </StyledFormWrapper>
+      <StyledVenueFormWrapper>
+        {renderSteps()}
+        <p>{isError}</p>
+      </StyledVenueFormWrapper>
+    </>
   );
 };

@@ -1,4 +1,4 @@
-import { useUserStore } from "../../../../stores/useUserStore";
+import { useHolidazeStore } from "../../../../stores";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import * as S from "./styles";
@@ -38,7 +38,7 @@ export const NavBar: React.FC = () => {
  */
 const MobileNav: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const userData = useUserStore((state) => state.userData);
+  const userData = useHolidazeStore((state) => state.userData);
   return (
     <S.StyledMobileNav>
       <S.StyledUserButton
@@ -93,12 +93,12 @@ const DesktopNav: React.FC = () => {
  * @returns {JSX.Element} The rendered navigation links component.
  */
 const NavLinks: React.FC = () => {
-  const userData = useUserStore((state) => state.userData);
+  const userData = useHolidazeStore((state) => state.userData);
   return (
     <S.StyledNavLinks>
       {userData.venueManager ? (
         <li>
-          <Link to={"/profile/" + userData.name}>Manager Dashboard</Link>
+          <Link to={"/profile/"}>Manager Dashboard</Link>
         </li>
       ) : (
         <li>
@@ -107,7 +107,7 @@ const NavLinks: React.FC = () => {
       )}
       {userData.accessToken && (
         <li>
-          <Link to={"/profile/" + userData.name}>View Bookings</Link>
+          <Link to={"/profile/"}>View Bookings</Link>
         </li>
       )}
       {!userData.accessToken ? (

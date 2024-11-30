@@ -2,8 +2,7 @@ import {
   StyledProgressContainer,
   StyledProgressBar,
 } from "../../../components/form/styles";
-import { useFormStore } from "../../../stores/useMultiStepStore";
-import { StyledFormWrapper } from "../../signin/styles";
+import { useHolidazeStore } from "../../../stores";
 import { Location } from "./location";
 import { Information } from "./information";
 import { Media } from "./media";
@@ -12,12 +11,13 @@ import { Amenities } from "./amenities";
 import { Confirmation } from "./confirmation";
 import { useRegister } from "../../register/useRegister";
 import { Loader } from "../../../components/loaders";
+import { Link } from "react-router-dom";
+import { StyledVenueFormWrapper } from "./styles";
 
 export const MultiSteps: React.FC = () => {
   const { createVenue, isError, isLoading, isSuccessful } = useRegister();
 
-  const { step, venue, setNext, setPrev, setVenueState } = useFormStore();
-  console.log(venue);
+  const { step, venue, setNext, setPrev, setVenueState } = useHolidazeStore();
   const totalSteps: number = 6;
   const renderSteps = () => {
     switch (step) {
@@ -99,19 +99,22 @@ export const MultiSteps: React.FC = () => {
   }
   if (isSuccessful) {
     return (
-      <div>
-        <h2>Succesfully Created a Venue</h2>
+      <div style={{ textAlign: "center" }}>
+        <h2>Successfully Created Venue</h2>
+        <Link to={"/"}>Home</Link>
       </div>
     );
   }
 
   return (
-    <StyledFormWrapper>
+    <>
       <StyledProgressContainer>
         <StyledProgressBar $percent={step / totalSteps} />
       </StyledProgressContainer>
-      {renderSteps()}
-      <p>{isError}</p>
-    </StyledFormWrapper>
+      <StyledVenueFormWrapper>
+        {renderSteps()}
+        <p>{isError}</p>
+      </StyledVenueFormWrapper>
+    </>
   );
 };

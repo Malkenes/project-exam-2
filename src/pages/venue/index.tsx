@@ -1,41 +1,40 @@
 import { useParams } from "react-router-dom";
-import { useFetchVenue } from "../../hooks/useFetch";
-import { Media } from "../../shared/types";
+import { Media, Venue as TypeVenue } from "../../shared/types";
 import { FaStar } from "react-icons/fa";
 import * as S from "./styles";
 import { useState } from "react";
 import { FormContainer } from "./form";
-import { SuccessModal } from "../../components/modals/successModal";
+import { useApi } from "../../hooks/useApi";
 
 export const Venue: React.FC = () => {
   const { id } = useParams();
-  const { data, isLoading, isError } = useFetchVenue(
+  const { data, isLoading, error } = useApi<TypeVenue>(
     `holidaze/venues/${id}?_bookings=true`,
   );
   if (isLoading) {
     return <div>loading</div>;
   }
-  if (isError) {
+  if (error) {
     return <div>error</div>;
   }
-  if (!data) {
+  if (!data || Array.isArray(data)) {
     return <div>no data</div>;
   }
-  console.log(data);
 
   return (
     <S.StyledVenuePage>
-      <SuccessModal />
       <div style={{ display: "flex" }}>
         <VenueImages media={data.media} />
         <div style={{ width: "40%", height: "100px" }}>
           {data.location.address}
         </div>
       </div>
-      <hgroup>
-        <h1>{data.name}</h1>
-        <p>{data.description}</p>
-      </hgroup>
+      <S.StyledVenueTitle>
+        <hgroup>
+          <h1>{data.name}</h1>
+          <p>{data.description}</p>
+        </hgroup>
+      </S.StyledVenueTitle>
       <S.StyledInfoGroup>
         <div>
           This
@@ -72,12 +71,15 @@ export const Venue: React.FC = () => {
             ))}
         </div>
       </S.StyledInfoGroup>
-      <FormContainer
-        venueId={data.id}
-        price={data.price}
-        maxGuests={data.maxGuests}
-        bookings={data.bookings}
-      />
+      <div style={{ position: "relative" }}>
+        <FormContainer
+          venueId={data.id}
+          name={data.name}
+          price={data.price}
+          maxGuests={data.maxGuests}
+          bookings={data.bookings}
+        />
+      </div>
     </S.StyledVenuePage>
   );
 };

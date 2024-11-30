@@ -1,9 +1,9 @@
 import {
   StyledProgressContainer,
   StyledProgressBar,
+  StyledFormError,
 } from "../../../components/form/styles";
-import { StyledFormWrapper } from "../styles";
-import { useFormStore } from "../../../stores/useMultiStepStore";
+import { useHolidazeStore } from "../../../stores";
 import { Personal } from "./personal";
 import { VenueManager } from "./venueManager";
 import { Avatar } from "./avatar";
@@ -11,11 +11,12 @@ import { Banner } from "./banner";
 import { useRegister } from "../useRegister";
 import { Loader } from "../../../components/loaders";
 import { Link } from "react-router-dom";
+import { StyledFormWrapper } from "../styles";
 
 export const MultiSteps: React.FC = () => {
   const { reg, isError, isLoading, isSuccessful } = useRegister();
   const { step, registerUser, setNext, setPrev, setRegisterUserState } =
-    useFormStore();
+    useHolidazeStore();
 
   const totalSteps: number = 4;
   const renderSteps = () => {
@@ -85,12 +86,14 @@ export const MultiSteps: React.FC = () => {
   }
 
   return (
-    <StyledFormWrapper>
+    <>
       <StyledProgressContainer>
         <StyledProgressBar $percent={step / totalSteps} />
       </StyledProgressContainer>
-      {renderSteps()}
-      <p>{isError}</p>
-    </StyledFormWrapper>
+      <StyledFormWrapper>
+        {renderSteps()}
+        <StyledFormError>{isError}</StyledFormError>
+      </StyledFormWrapper>
+    </>
   );
 };

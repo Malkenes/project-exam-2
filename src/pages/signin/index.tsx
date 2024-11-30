@@ -1,27 +1,24 @@
 import { SignInForm } from "./signinForm";
-import { StyledSignIn, StyledFormWrapper, StyledHelpWrapper } from "./styles";
+import {
+  StyledSignIn,
+  StyledFormWrapper,
+  StyledHelpWrapper,
+  StyledTitleWrapper,
+} from "./styles";
 import { Link } from "react-router-dom";
-import { useUserStore } from "../../stores/useUserStore";
 
 export const SignIn: React.FC = () => {
-  const userData = useUserStore((state) => state.userData);
-  if (userData.accessToken) {
-    return (
-      <div>
-        <h1>You are already signed in</h1>
-        <Link to={"/"}>return to home</Link>
-      </div>
-    );
-  }
   return (
     <StyledSignIn>
-      <hgroup>
-        <h1>Sign In</h1>
-        <p>
-          Your adventure awaits! Sign in to find the perfect place to rest and
-          recharge.
-        </p>
-      </hgroup>
+      <StyledTitleWrapper>
+        <hgroup>
+          <h1>Sign In</h1>
+          <p>
+            Your adventure awaits! Sign in to find the perfect place to rest and
+            recharge.
+          </p>
+        </hgroup>
+      </StyledTitleWrapper>
       <StyledFormWrapper>
         <SignInForm />
       </StyledFormWrapper>

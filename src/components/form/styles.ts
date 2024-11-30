@@ -20,7 +20,7 @@ export const StyledInputContainer = styled.div`
   textarea {
     font-size: 16px;
     padding: 1.8rem 1rem 0.5rem 1rem;
-    min-width: 300px;
+    min-width: 200px;
     width: 100%;
     box-sizing: border-box;
     font-weight: 800;
@@ -51,6 +51,7 @@ export const StyledLockedInputContainer = styled.div`
   padding: 8px;
   input,
   textarea {
+    text-align: center;
     font-size: 16px;
     font-weight: 800;
     border-radius: 4px;
@@ -62,6 +63,10 @@ export const StyledLockedInputContainer = styled.div`
   textarea {
     height: 120px;
     resize: none;
+  }
+  label {
+    font-weight: 800;
+    margin-bottom: 8px;
   }
 `;
 export const StyledCheckContainer = styled.div`
@@ -76,7 +81,7 @@ export const StyledErrorContainer = styled.div`
 `;
 
 export const StyledProgressContainer = styled.div`
-  height: 8px;
+  height: 12px;
   width: 100%;
 `;
 

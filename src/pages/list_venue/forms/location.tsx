@@ -5,11 +5,12 @@ import {
   StyledInputContainer,
 } from "../../../components/form/styles";
 
-import "Leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css";
 import { MapContainer, Marker, TileLayer, useMapEvents } from "react-leaflet";
 
 import { useVenueStore } from "../../../stores/useVenueStore";
 import { useForm } from "react-hook-form";
+import { StyledLocation } from "./location.styles";
 
 interface Props {
   onSubmit: (data: {
@@ -49,62 +50,69 @@ export const Location: React.FC<Props> = ({ onSubmit, defaultValues }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(handleFormSubmit)} style={{ display: "flex" }}>
-      <Map />
-      <div>
-        <StyledInputContainer>
-          <input
-            type="text"
-            placeholder="Continent"
-            id="continent"
-            {...register("continent")}
-          />
-          <label htmlFor="continent">Continent</label>
-        </StyledInputContainer>
-        <StyledInputContainer>
-          <input
-            type="text"
-            placeholder="Country"
-            id="country"
-            {...register("country")}
-          />
-          <label htmlFor="country">Country</label>
-        </StyledInputContainer>
-        <StyledInputContainer>
-          <input
-            type="text"
-            placeholder="City"
-            id="city"
-            {...register("city")}
-          />
-          <label htmlFor="city">City</label>
-        </StyledInputContainer>
-        <StyledInputContainer>
-          <input type="text" placeholder="Zip" id="zip" {...register("zip")} />
-          <label htmlFor="zip">Zip</label>
-        </StyledInputContainer>
-        <StyledInputContainer>
-          <input
-            type="text"
-            placeholder="Address"
-            id="address"
-            {...register("address")}
-          />
-          <label htmlFor="address">Address</label>
-        </StyledInputContainer>
-        <StyledButtonContainer>
-          <StyledButton type="submit" $variant="primary">
-            Continue
-          </StyledButton>
-        </StyledButtonContainer>
-      </div>
+    <form onSubmit={handleSubmit(handleFormSubmit)}>
+      <StyledLocation>
+        <Map />
+        <div>
+          <StyledInputContainer>
+            <input
+              type="text"
+              placeholder="Continent"
+              id="continent"
+              {...register("continent")}
+            />
+            <label htmlFor="continent">Continent</label>
+          </StyledInputContainer>
+          <StyledInputContainer>
+            <input
+              type="text"
+              placeholder="Country"
+              id="country"
+              {...register("country")}
+            />
+            <label htmlFor="country">Country</label>
+          </StyledInputContainer>
+          <StyledInputContainer>
+            <input
+              type="text"
+              placeholder="City"
+              id="city"
+              {...register("city")}
+            />
+            <label htmlFor="city">City</label>
+          </StyledInputContainer>
+          <StyledInputContainer>
+            <input
+              type="text"
+              placeholder="Zip"
+              id="zip"
+              {...register("zip")}
+            />
+            <label htmlFor="zip">Zip</label>
+          </StyledInputContainer>
+          <StyledInputContainer>
+            <input
+              type="text"
+              placeholder="Address"
+              id="address"
+              {...register("address")}
+            />
+            <label htmlFor="address">Address</label>
+          </StyledInputContainer>
+          <StyledButtonContainer>
+            <StyledButton type="submit" $variant="primary">
+              Continue
+            </StyledButton>
+          </StyledButtonContainer>
+        </div>
+      </StyledLocation>
     </form>
   );
 };
 
 const Map: React.FC = () => {
   return (
-    <div style={{ height: "500px", width: "500px" }}>
+    <div style={{ height: "500px" }}>
       <MapContainer
         center={[51.505, -0.09]}
         zoom={1}

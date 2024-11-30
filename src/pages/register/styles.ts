@@ -1,26 +1,6 @@
 import styled from "styled-components";
 
-export const StyledRegister = styled.main`
-  margin: 40px;
-  max-width: 700px;
-  margin: auto;
-  hgroup {
-    margin-bottom: 64px;
-    h1 {
-      margin-bottom: 16px;
-    }
-    p {
-      max-width: 300px;
-      color: #6c757d;
-    }
-  }
-
-  h2 {
-    font-weight: 500;
-    text-align: center;
-    margin: 48px;
-  }
-`;
+export const StyledRegister = styled.main``;
 
 export const StyledOrderedList = styled.ol`
   margin-bottom: 48px;
@@ -45,6 +25,18 @@ export const StyledOrderedList = styled.ol`
 `;
 
 export const StyledFormWrapper = styled.div`
-  min-height: 700px;
+  margin: 0 auto;
+  max-width: 700px;
+  form {
+    padding: 0 1rem;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+`;
+
+export const StyledMultiStepWrapper = styled.div`
+  min-height: 600px;
   position: relative;
 `;

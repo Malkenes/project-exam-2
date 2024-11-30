@@ -1,15 +1,17 @@
 import { BookingCalendar } from "../../../components/form/calendar";
 import { FormFieldset } from "../../../components/form/formFieldset";
 import { bookingInVenue } from "../../../shared/types";
-import { StyledBookingForm, StyledBookingInfo } from "./styles";
+import {
+  StyledBookingForm,
+  StyledBookingInfo,
+  StyledPriceContainer,
+} from "./styles";
 import { getFullyBookedDates } from "../../../utils";
-import { useBoundStore } from "../../../stores/useVenueStore";
+import { useHolidazeStore } from "../../../stores";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { isRangeFullyBooked, getRangeDates } from "../../../utils/helpers";
-import { useRegister } from "../../register/useRegister";
-import { StyledFormError } from "../../../components/form/styles";
-import { Loader } from "../../../components/loaders";
 import { StyledButton } from "../../../components/buttons/styles";
+import { useNavigate } from "react-router-dom";
 
 type BookingData = {
   dateFrom: Date;
@@ -20,12 +22,13 @@ type BookingData = {
 
 interface Props {
   venueId: string;
+  venueName?: string;
   maxGuests: number;
   price: number;
   bookings?: bookingInVenue[];
   defaultDates?: Value;
   guests?: number;
-  onSubmitAction: (data: BookingData) => Promise<void>;
+  onSubmitAction: (data: BookingData) => void;
 }
 
 type ValuePiece = Date | null;
@@ -41,7 +44,7 @@ export const BookingForm: React.FC<Props> = ({
   guests = 1,
   onSubmitAction,
 }) => {
-  const { booking, setGuests } = useBoundStore();
+  const { booking, setBookingState } = useHolidazeStore();
   const { control, handleSubmit } =
     useForm<
       Pick<{ bookingDates: Value; guests: number }, "bookingDates" | "guests">
@@ -53,7 +56,6 @@ export const BookingForm: React.FC<Props> = ({
         const selectedRange = getRangeDates(nextValue[0], nextValue[1]);
 
         if (isRangeFullyBooked(selectedRange, fullyBooked)) {
-          //alert("The selected range includes fully booked dates. Please choose another range.");
           onChange([null, null]);
         } else {
           onChange(nextValue);
@@ -113,18 +115,19 @@ export const BookingForm: React.FC<Props> = ({
               selectedValue={value}
               onChange={(value) => {
                 onChange(value);
-                setGuests(value);
+                setBookingState({ guests: value });
               }}
             />
           )}
         />
-        <div>
-          <h3>Total price</h3>
-          <p>{price * booking.guests}</p>
-        </div>
+        <StyledPriceContainer>
+          <h3>Price</h3>
+          <p>{price * booking.guests} Bitcoin</p>
+          <span>per day</span>
+        </StyledPriceContainer>
         <div>
           <StyledButton $variant="primary" type="submit">
-            submit
+            Book Now
           </StyledButton>
         </div>
       </StyledBookingInfo>
@@ -141,6 +144,7 @@ const submitBooking = (
 
 interface Xprops {
   venueId: string;
+  name: string;
   maxGuests: number;
   price: number;
   bookings?: bookingInVenue[];
@@ -151,13 +155,11 @@ export const FormContainer: React.FC<Xprops> = ({
   maxGuests,
   price,
   venueId,
+  name,
 }) => {
-  const { createBooking, isError, isLoading } = useRegister();
+  const navigate = useNavigate();
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
+  const { setBookingState } = useHolidazeStore();
   return (
     <>
       <BookingForm
@@ -165,10 +167,12 @@ export const FormContainer: React.FC<Xprops> = ({
         maxGuests={maxGuests}
         price={price}
         venueId={venueId}
-        onSubmitAction={createBooking}
+        onSubmitAction={(data) => {
+          setBookingState(data);
+          setBookingState({ name: name });
+          navigate("/confirmation");
+        }}
       />
-
-      <StyledFormError>{isError}</StyledFormError>
     </>
   );
 };

@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { Loader } from "../../components/loaders";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -32,8 +33,8 @@ export const SignInForm: React.FC = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
-  const { signIn, isError, isLoading } = useSignIn();
-
+  const { signIn, isError, isLoading, isSuccessful } = useSignIn();
+  const navigate = useNavigate();
   async function onSubmit(data: {
     email: string;
     password: string;
@@ -43,6 +44,9 @@ export const SignInForm: React.FC = () => {
   }
   if (isLoading) {
     return <Loader />;
+  }
+  if (isSuccessful) {
+    navigate("/profile");
   }
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,7 +78,7 @@ export const SignInForm: React.FC = () => {
         <input type="checkbox" id="keep" {...register("keepSignedIn")} />
         <label htmlFor="keep">Keep me signed in</label>
       </StyledCheckContainer>
-      <StyledFullButton variant="primary">Sign In</StyledFullButton>
+      <StyledFullButton $variant="primary">Sign In</StyledFullButton>
       <StyledFormError>{isError}</StyledFormError>
     </form>
   );

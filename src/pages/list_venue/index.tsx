@@ -1,10 +1,16 @@
-import { SuccessModal } from "../../components/modals/successModal";
+import { Unauthorized } from "../../components/unauthorized";
+import { useHolidazeStore } from "../../stores";
 import { MultiSteps } from "./forms";
 
 export const ListVenue: React.FC = () => {
+  const { userData } = useHolidazeStore();
+
+  if (!userData.accessToken) {
+    return <Unauthorized />;
+  }
+
   return (
     <main>
-      <SuccessModal />
       <hgroup>
         <h1>List Venue</h1>
         <p>

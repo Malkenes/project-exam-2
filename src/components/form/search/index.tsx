@@ -2,6 +2,9 @@ import { useForm } from "react-hook-form";
 import { StyledInputContainer } from "../styles";
 import {
   StyledDatePicker,
+  StyledGuestInput,
+  StyledQueryInput,
+  StyledSearchButton,
   StyledSearchContainer,
   StyledSearchForm,
 } from "./styles";
@@ -9,8 +12,7 @@ import { StyledCalendar } from "../calendar/styles";
 import { useMediaQuery } from "../../../hooks/useMediaQuery";
 import { FormFieldset } from "../formFieldset";
 import { useState } from "react";
-import { useSearchStore } from "../../../stores/useSearchStore";
-import { StyledButton } from "../../buttons/styles";
+import { useHolidazeStore } from "../../../stores";
 import { useNavigate } from "react-router-dom";
 interface SearchData {
   query: string;
@@ -32,7 +34,7 @@ const SearchBar: React.FC<Props> = ({
   calendar,
   guests,
 }) => {
-  const { setSearchState, search } = useSearchStore();
+  const { setSearchState, search } = useHolidazeStore();
   const { register, handleSubmit, setValue } = useForm<SearchData>();
   const navigate = useNavigate();
 
@@ -52,7 +54,7 @@ const SearchBar: React.FC<Props> = ({
 
   return (
     <StyledSearchForm onSubmit={handleSubmit(handleFormSubmit)}>
-      <StyledInputContainer>
+      <StyledQueryInput>
         <input
           defaultValue={search.query}
           type="search"
@@ -61,7 +63,7 @@ const SearchBar: React.FC<Props> = ({
           {...register("query")}
         />
         <label htmlFor="query">Accomodation Name</label>
-      </StyledInputContainer>
+      </StyledQueryInput>
       <StyledDatePicker onClick={() => setIsCalendarOpen(true)}>
         <StyledInputContainer>
           <input
@@ -84,7 +86,7 @@ const SearchBar: React.FC<Props> = ({
           <label htmlFor="to">To</label>
         </StyledInputContainer>
       </StyledDatePicker>
-      <StyledInputContainer onFocus={() => setIsGuestsOpen(true)}>
+      <StyledGuestInput onFocus={() => setIsGuestsOpen(true)}>
         <input
           type="text"
           placeholder="Guests"
@@ -92,20 +94,18 @@ const SearchBar: React.FC<Props> = ({
           readOnly
           value={guests}
           {...register("guests")}
-          style={{ minWidth: "60px" }}
         />
         <label htmlFor="guests">Guests</label>
-      </StyledInputContainer>
-      <StyledButton $variant="primary" type="submit">
+      </StyledGuestInput>
+      <StyledSearchButton $variant="primary" type="submit">
         Search
-      </StyledButton>
+      </StyledSearchButton>
     </StyledSearchForm>
   );
 };
 
 export const SearchBarContainer: React.FC = () => {
-  const { search } = useSearchStore();
-
+  const { search } = useHolidazeStore();
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
   const [isGuestsOpen, setIsGuestsOpen] = useState(false);
   const [guestValue, setGuestValue] = useState(search.guests);
@@ -122,7 +122,8 @@ export const SearchBarContainer: React.FC = () => {
         setIsCalendarOpen={setIsCalendarOpen}
         setIsGuestsOpen={setIsGuestsOpen}
       />
-      <div>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+
         {isCalendarOpen && (
           <StyledCalendar
             onChange={(value) => {

@@ -1,23 +1,24 @@
 import styled from "styled-components";
 
 export const StyledSignIn = styled.main`
-  margin: 40px;
-  max-width: 700px;
-  margin: auto;
-  hgroup {
-    margin-bottom: 64px;
-    h1 {
-      margin-bottom: 16px;
-    }
-    p {
-      max-width: 300px;
-      color: #6c757d;
-    }
+  form {
+    padding: 0 1rem;
   }
 `;
 
+export const StyledTitleWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+`;
+
 export const StyledFormWrapper = styled.div`
+  max-width: 700px;
   min-height: 400px;
+  margin: 0 auto;
+  h2 {
+    text-align: center;
+  }
 `;
 
 export const StyledHelpWrapper = styled.div`
