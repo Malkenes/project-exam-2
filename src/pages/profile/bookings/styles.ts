@@ -17,7 +17,7 @@ export const StyledGrid = styled(StyledColumn)`
   }
   @media (min-width: 1025px) {
     li {
-      width: calc(33% - 17px);
+      width: calc(33% - 19px);
     }
   }
 `;

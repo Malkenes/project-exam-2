@@ -3,7 +3,6 @@ import {
   StyledProgressBar,
 } from "../../../components/form/styles";
 import { useHolidazeStore } from "../../../stores";
-import { StyledFormWrapper } from "../../signin/styles";
 import { Location } from "./location";
 import { Information } from "./information";
 import { Media } from "./media";
@@ -13,6 +12,7 @@ import { Confirmation } from "./confirmation";
 import { useRegister } from "../../register/useRegister";
 import { Loader } from "../../../components/loaders";
 import { Link } from "react-router-dom";
+import { StyledVenueFormWrapper } from "./styles";
 
 export const MultiSteps: React.FC = () => {
   const { createVenue, isError, isLoading, isSuccessful } = useRegister();
@@ -107,12 +107,14 @@ export const MultiSteps: React.FC = () => {
   }
 
   return (
-    <StyledFormWrapper>
+    <>
       <StyledProgressContainer>
         <StyledProgressBar $percent={step / totalSteps} />
       </StyledProgressContainer>
-      {renderSteps()}
-      <p>{isError}</p>
-    </StyledFormWrapper>
+      <StyledVenueFormWrapper>
+        {renderSteps()}
+        <p>{isError}</p>
+      </StyledVenueFormWrapper>
+    </>
   );
 };

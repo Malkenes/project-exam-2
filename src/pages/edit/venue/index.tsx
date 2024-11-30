@@ -13,9 +13,9 @@ import { Confirmation } from "../../list_venue/forms/confirmation";
 import { Information } from "../../list_venue/forms/information";
 import { Media } from "../../list_venue/forms/media";
 import { Pricing } from "../../list_venue/forms/pricing";
-import { StyledFormWrapper } from "../../signin/styles";
 import { Link } from "react-router-dom";
 import { useApi } from "../../../hooks/useApi";
+import { StyledVenueFormWrapper } from "../../list_venue/forms/styles";
 
 export const EditVenue: React.FC<{ id: string | undefined }> = ({ id }) => {
   const { data, isLoading, error } = useApi<Venue>(`holidaze/venues/${id}`);
@@ -143,12 +143,14 @@ const FormContainer: React.FC<Props> = ({ data }) => {
     );
   }
   return (
-    <StyledFormWrapper>
+    <>
       <StyledProgressContainer>
         <StyledProgressBar $percent={step / totalSteps} />
       </StyledProgressContainer>
-      {renderSteps()}
-      <p>{isError}</p>
-    </StyledFormWrapper>
+      <StyledVenueFormWrapper>
+        {renderSteps()}
+        <p>{isError}</p>
+      </StyledVenueFormWrapper>
+    </>
   );
 };

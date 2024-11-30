@@ -1,6 +1,10 @@
 import { useHolidazeStore } from "../../stores";
-import { StyledModalWrapper, StyledModal } from "./styles";
-import { StyledButton } from "../buttons/styles";
+import {
+  StyledModalWrapper,
+  StyledModal,
+  StyledDeleteButton,
+  StyledCloseModal,
+} from "./styles";
 import { useRegister } from "../../pages/register/useRegister";
 import { Loader } from "../loaders";
 
@@ -19,7 +23,7 @@ export const DeleteModal: React.FC<Props> = ({ title, id, type }) => {
   return (
     <StyledModalWrapper>
       <StyledModal>
-        <button onClick={closeModal}>close</button>
+        <StyledCloseModal onClick={closeModal}>&#10005;</StyledCloseModal>
         <h2>{title}</h2>
         <p>
           Deleting your {type} will erase all its information and cannot be
@@ -58,9 +62,9 @@ const DeleteBooking: React.FC<{ id: string; type: string }> = ({
 
   return (
     <div>
-      <StyledButton onClick={handleDelete} $variant="secondary">
+      <StyledDeleteButton onClick={handleDelete} $variant="secondary">
         Confirm
-      </StyledButton>
+      </StyledDeleteButton>
       <div>{isError}</div>
     </div>
   );

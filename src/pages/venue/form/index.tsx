@@ -56,7 +56,6 @@ export const BookingForm: React.FC<Props> = ({
         const selectedRange = getRangeDates(nextValue[0], nextValue[1]);
 
         if (isRangeFullyBooked(selectedRange, fullyBooked)) {
-          //alert("The selected range includes fully booked dates. Please choose another range.");
           onChange([null, null]);
         } else {
           onChange(nextValue);
@@ -160,9 +159,7 @@ export const FormContainer: React.FC<Xprops> = ({
 }) => {
   const navigate = useNavigate();
 
-  const { setBookingState, booking } = useHolidazeStore();
-  console.log(booking);
-  console.log(name);
+  const { setBookingState } = useHolidazeStore();
   return (
     <>
       <BookingForm

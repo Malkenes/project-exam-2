@@ -1,9 +1,9 @@
-import { StyledButton } from "../../components/buttons/styles";
+import { StyledLink } from "../../components/buttons/styles";
 import { SearchBarContainer } from "../../components/form/search";
 import {
   VenueList,
   VenueListContinent,
-  VenueListTest,
+  VenueListPopular,
 } from "../../components/venue/list";
 import { getThreeContinents } from "../../utils";
 import { StyledHomePage, StyledInfoCard } from "./styles";
@@ -61,7 +61,9 @@ const HomePageContent: React.FC = () => {
               Unlock new opportunities and turn your space into a successful
               business.
             </p>
-            <StyledButton $variant="primary">list your property</StyledButton>
+            <StyledLink to={"/list_venue"} $variant="primary">
+              list your property
+            </StyledLink>
           </div>
         </StyledInfoCard>
       </div>
@@ -70,7 +72,7 @@ const HomePageContent: React.FC = () => {
       </div>
       <div>
         <h2>Popular Venues</h2>
-        <VenueListTest />
+        <VenueListPopular />
       </div>
       <div>
         <VenueListContinent continent={continentList[2]} />

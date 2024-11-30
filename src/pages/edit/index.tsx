@@ -6,6 +6,8 @@ import { useEffect } from "react";
 import { EditBooking } from "./booking";
 import { EditVenue } from "./venue";
 import { Unauthorized } from "../../components/unauthorized";
+import { StyledHeaderWrapper } from "./styles";
+import { FaTrash } from "react-icons/fa";
 
 export const Edit: React.FC = () => {
   const { openModal, resetSteps, userData } = useHolidazeStore();
@@ -37,12 +39,20 @@ export const Edit: React.FC = () => {
   if (id) {
     return (
       <main>
-        <DeleteModal title="Want to say Goodbye?" id={id} type={type} />
-        <hgroup>
-          <h1>Edit {type}</h1>
-        </hgroup>
+        <DeleteModal
+          title={"Want to delete your " + type + "?"}
+          id={id}
+          type={type}
+        />
+        <StyledHeaderWrapper>
+          <hgroup>
+            <h1>Edit {type}</h1>
+          </hgroup>
+          <button onClick={openModal}>
+            <FaTrash />I want to remove my {type}
+          </button>
+        </StyledHeaderWrapper>
         <div>{renderEditType()}</div>
-        <button onClick={openModal}>I want to remove my {type}</button>
       </main>
     );
   }
